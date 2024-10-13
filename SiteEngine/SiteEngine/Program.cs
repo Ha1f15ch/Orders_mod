@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using DatabaseContext;
+
 namespace SiteEngine
 {
     public class Program
@@ -31,6 +34,22 @@ namespace SiteEngine
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            using (AppDbContext db = new AppDbContext())
+            {
+                var users = db.Users.ToList();
+                Console.WriteLine("user list - ");
+                foreach (var user in users)
+                {
+                    Console.WriteLine(user.Name);
+                }
+
+                var userprofiles = db.UserProfiles.ToList();
+                foreach (var profile in userprofiles)
+                {
+                    Console.WriteLine(profile);
+                }
+            }
         }
     }
 }
