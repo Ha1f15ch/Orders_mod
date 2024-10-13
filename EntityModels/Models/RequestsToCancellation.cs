@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models
 {
@@ -19,8 +14,11 @@ namespace Models
         public int InitiatorUserId { get; set; }
         public int ConfirmedUserId { get; set; }
         public DateTime DateCreated { get; set; }
-        public DateTime DateDeleted { get; set; }
+        public DateTime? DateDeleted { get; set; }
 
         public Order? Order { get; set; }
+        public User? Initiator { get; set; }
+        public User? ConfirmedUser { get; set; }
+
     }
 }
