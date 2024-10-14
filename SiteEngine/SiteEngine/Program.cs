@@ -21,6 +21,8 @@ namespace SiteEngine
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -31,25 +33,13 @@ namespace SiteEngine
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
 
+            
+
+            app.Run(async (context) => await context.Response.WriteAsync("hello this is app.Run(async (context) => await context.Response.WriteAsync"));
             app.Run();
-
-            using (AppDbContext db = new AppDbContext())
-            {
-                var users = db.Users.ToList();
-                Console.WriteLine("user list - ");
-                foreach (var user in users)
-                {
-                    Console.WriteLine(user.Name);
-                }
-
-                var userprofiles = db.UserProfiles.ToList();
-                foreach (var profile in userprofiles)
-                {
-                    Console.WriteLine(profile);
-                }
-            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Models
         public List<Order> OrdersAssigned { get; set; } = new();
         public UserProfile UserProfile { get; set; } = null!;
         public List<Role> Roles { get; set; } = new();
+        public Token? Token { get; set; } = null!;
         public List<UserRole> UserRoles { get; set; } = new();
         public List<OrderScores> OrderScores { get; set; } = new();
         public List<AssignersRequests> AssignersRequests { get; set; } = new();

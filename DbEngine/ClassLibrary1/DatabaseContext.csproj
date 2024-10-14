@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DataBaseMethods\Repositories\Repositories.csproj" />
     <ProjectReference Include="..\..\EntityModels\Models\Models.csproj" />
+    <ProjectReference Include="..\..\LoggingService\LogServices\LogServices.csproj" />
   </ItemGroup>
 
 </Project>

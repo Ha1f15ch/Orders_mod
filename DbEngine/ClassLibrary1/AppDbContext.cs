@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LogServices;
+using Microsoft.EntityFrameworkCore;
 using Models;
+using Microsoft.Extensions.Logging;
 
 namespace DatabaseContext
 {
@@ -15,11 +17,18 @@ namespace DatabaseContext
         public DbSet<OrderScores> OrderScores { get; set; } = null!;
         public DbSet<AssignersRequests> AssignersRequests { get; set; } = null!;
         public DbSet<RequestsToCancellation> RequestsToCancellations { get; set; } = null!;
+        public DbSet<Token> Tokens { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=UsersOrders;Username=postgres;Password=Pass1!2@");
+            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
         }
+
+        public static readonly ILoggerFactory SharedLoggerProvider = LoggerFactory.Create(builder =>
+        {
+            builder.AddProvider(new SharedLoggerProvider());
+        });
 
         public AppDbContext()
         {
@@ -38,6 +47,9 @@ namespace DatabaseContext
             modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderScoresConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.AssignersRequestsConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.RequestsToCancellationConfiguration());
+            modelBuilder.ApplyConfiguration(new EntityConfigurations.TokenConfiguration());
         }
+
+
     }
 }
