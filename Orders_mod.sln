@@ -3,25 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbEngine", "DbEngine", "{078CD25F-4D63-4703-8573-BB9E56B5E40C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SiteEngine", "SiteEngine", "{7E59F352-A6B1-4729-8114-1C4FC9B0ED73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityModels", "EntityModels", "{624B5324-67BE-490D-838E-4F6C285E72A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiteEngine", "SiteEngine\SiteEngine\SiteEngine.csproj", "{5FF6A15E-848A-41EE-B01B-4BAC4F36D332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseContext", "DbEngine\ClassLibrary1\DatabaseContext.csproj", "{57019239-696A-4AAD-9DCE-BEB75AAA5046}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "EntityModels\Models\Models.csproj", "{63667B15-1AF5-48C2-870D-37C791CA71CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "EntityModels\Models\Models.csproj", "{63667B15-1AF5-48C2-870D-37C791CA71CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataBaseMethods", "DataBaseMethods", "{C605E556-1B70-4455-92D2-8171A12FF2B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "DataBaseMethods\Repositories\Repositories.csproj", "{76E61F80-7798-46D8-8799-338FF9D3F146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "DataBaseMethods\Repositories\Repositories.csproj", "{76E61F80-7798-46D8-8799-338FF9D3F146}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LoggingService", "LoggingService", "{76EFF45B-F0DC-47A7-ABC8-D5CAEF4C17B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogServices", "LoggingService\LogServices\LogServices.csproj", "{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogServices", "LoggingService\LogServices\LogServices.csproj", "{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbEngine", "DbEngine", "{03041050-FBAC-406C-874C-E6E0F701B56B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseContext", "DbEngine\DatabaseContext\DatabaseContext.csproj", "{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{5FF6A15E-848A-41EE-B01B-4BAC4F36D332}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FF6A15E-848A-41EE-B01B-4BAC4F36D332}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FF6A15E-848A-41EE-B01B-4BAC4F36D332}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57019239-696A-4AAD-9DCE-BEB75AAA5046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57019239-696A-4AAD-9DCE-BEB75AAA5046}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57019239-696A-4AAD-9DCE-BEB75AAA5046}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57019239-696A-4AAD-9DCE-BEB75AAA5046}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63667B15-1AF5-48C2-870D-37C791CA71CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63667B15-1AF5-48C2-870D-37C791CA71CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63667B15-1AF5-48C2-870D-37C791CA71CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,16 +45,20 @@ Global
 		{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5FF6A15E-848A-41EE-B01B-4BAC4F36D332} = {7E59F352-A6B1-4729-8114-1C4FC9B0ED73}
-		{57019239-696A-4AAD-9DCE-BEB75AAA5046} = {078CD25F-4D63-4703-8573-BB9E56B5E40C}
 		{63667B15-1AF5-48C2-870D-37C791CA71CB} = {624B5324-67BE-490D-838E-4F6C285E72A8}
 		{76E61F80-7798-46D8-8799-338FF9D3F146} = {C605E556-1B70-4455-92D2-8171A12FF2B4}
 		{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7} = {76EFF45B-F0DC-47A7-ABC8-D5CAEF4C17B4}
+		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5} = {03041050-FBAC-406C-874C-E6E0F701B56B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {967BD522-542E-4714-A826-94E95E4B5537}
