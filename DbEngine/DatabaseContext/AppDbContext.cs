@@ -19,21 +19,21 @@ namespace DatabaseContext
         public DbSet<RequestsToCancellation> RequestsToCancellations { get; set; } = null!;
         public DbSet<Token> Tokens { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=UsersOrders;Username=postgres;Password=Pass1!2@");
-            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
-        }
-
-        public static readonly ILoggerFactory SharedLoggerProvider = LoggerFactory.Create(builder =>
-        {
-            builder.AddProvider(new SharedLoggerProvider());
-        });
-
-        public AppDbContext()
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
+        }
+
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=UsersOrders;Username=postgres;Password=Pass1!2@");
+            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
+        }*/
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,9 @@ namespace DatabaseContext
             modelBuilder.ApplyConfiguration(new EntityConfigurations.TokenConfiguration());
         }
 
-
+        public static readonly ILoggerFactory SharedLoggerProvider = LoggerFactory.Create(builder =>
+        {
+            builder.AddProvider(new SharedLoggerProvider());
+        });
     }
 }

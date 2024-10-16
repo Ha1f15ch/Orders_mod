@@ -15,11 +15,19 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="ServiceStack.Interfaces" Version="8.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\DbEngine\DatabaseContext\DatabaseContext.csproj" />
     <ProjectReference Include="..\..\EntityModels\Models\Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\API\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Middleware\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DatabaseContext;
+using Microsoft.OpenApi.Models;
 
 namespace SiteEngine
 {
@@ -9,8 +10,17 @@ namespace SiteEngine
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(connectionString));
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             var app = builder.Build();
 
@@ -22,23 +32,25 @@ namespace SiteEngine
                 app.UseHsts();
             }
             
-            
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}"
-            );
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1 documentation");
+                c.RoutePrefix = string.Empty;
+            });
             
-
-            app.Run(async (context) => await context.Response.WriteAsync("hello this is app.Run(async (context) => await context.Response.WriteAsync"));
             app.Run();
         }
     }
