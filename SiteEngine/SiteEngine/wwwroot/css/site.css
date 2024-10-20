@@ -1,22 +1,154 @@
-html {
-  font-size: 14px;
+﻿html {
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.scroll-content {
+    height: 200px;
+    overflow: scroll;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.rounded-4 {
+    border-radius: 5%;
+}
+
+.newStyle {
+    background-color: #CCFFCC;
+}
+
+.startStyle {
+    background-color: #66CCFF;
+}
+
+.deletedStyle {
+    background-color: #FF99CC;
+}
+
+.discussStyle {
+    background-color: #FFFFCC;
+}
+
+.canceledStyle {
+    background-color: #FFCC99;
+}
+
+.finishedStyle {
+    background-color: #32CD32;
+}
+
+.dropdown-menu-checkboxes {
+    padding: 10px;
+    min-width: 200px;
+}
+
+.scroll-content {
+    max-height: 150px; /* Óñòàíàâëèâàåò ìàêñèìàëüíóþ âûñîòó äëÿ ïðîêðó÷èâàåìîãî êîíòåíòà */
+    overflow-y: auto; /* Äîáàâëÿåò âåðòèêàëüíóþ ïðîêðóòêó */
+}
+
+.status-circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.status-new {
+    background-color: #CCFFCC; /* Öâåò äëÿ íîâîãî çàêàçà */
+}
+
+.status-in-progress {
+    background-color: #66CCFF; /* Öâåò äëÿ çàêàçà â ïðîöåññå */
+}
+
+.status-completed {
+    background-color: #32CD32; /* Öâåò äëÿ çàâåðøåííîãî çàêàçà */
+}
+
+.status-canceled {
+    background-color: #FFCC99; /* Öâåò äëÿ îòìåíåííîãî çàêàçà */
+}
+
+.status-deleted {
+    background-color: #FF99CC; /* Öâåò äëÿ óäàëåííîãî çàêàçà */
+}
+
+.status-discuss {
+    background-color: #FFFFCC;
+}
+
+.star-rating {
+    display: flex;
+    direction: row-reverse;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.star {
+    font-size: 2rem;
+    cursor: pointer;
+    color: gray;
+}
+
+    .star:hover,
+    .star.selected {
+        color: gold;
+    }
+
+.priority-major {
+    width: 20px;
+    height: 20px;
+    background-color: #8B4513;
+}
+
+.priority-minimal {
+    width: 20px;
+    height: 20px;
+    background-color: #20B2AA;
+}
+
+.priority-normal {
+    width: 20px;
+    height: 20px;
+    background-color: #7CFC00;
+}
+
+.priority-middle {
+    width: 20px;
+    height: 20px;
+    background-color: #FFFF00;
+}
+
+.priority-show-stopper {
+    width: 20px;
+    height: 20px;
+    background-color: #800000;
 }

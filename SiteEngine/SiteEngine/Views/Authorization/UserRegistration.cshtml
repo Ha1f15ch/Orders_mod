@@ -2,9 +2,87 @@
 @model UserRegistrationModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/mainContent.cshtml";
 }
 
 <div class="container">
-    content body for create account, registration
+    <div class="row row-gap-3 align-items-center">
+        <div class="col-3">
+
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="row">
+                    <div class="justify-content-center d-flex">
+                        <h6><p>Форма для регистрации</p></h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="justify-content-center d-flex">
+                        <form asp-action="registration" asp-controller="Authorization" method="post">
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserName"
+                                               type="text"
+                                               class="form-control"
+                                               placeholder="Введите логин" />
+                                        <label asp-for="UserName" class="form-label">Логин</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserName"></span>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserEmail"
+                                               type="email"
+                                               class="form-control"
+                                               placeholder="Введите почтовый адрес" />
+                                        <label asp-for="UserEmail" class="form-label">Почта</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserEmail"></span>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserPhoneNumber"
+                                               type="text"
+                                               class="form-control"
+                                               placeholder="Введите номер телефона" />
+                                        <label asp-for="UserPhoneNumber" class="form-label">№ телефона</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserPhoneNumber"></span>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserPassword"
+                                               type="password"
+                                               class="form-control"
+                                               placeholder="Введите Ваш пароль" />
+                                        <label asp-for="UserPassword" class="form-label">Пароль</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserPassword"></span>
+                                </div>
+                            </div>
+
+                            <div class="p-2 flex-fill d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
 </div>
