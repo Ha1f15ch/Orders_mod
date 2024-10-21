@@ -6,6 +6,10 @@ using SiteEngine.CommandsAndHandlers.Handlers.Users;
 using System.Reflection;
 using Repositories.InterfaceRepositories;
 using Repositories.Repositories;
+using System.Text;
+using ServiceStack;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SiteEngine
 {
@@ -20,6 +24,34 @@ namespace SiteEngine
                 options.UseNpgsql(connectionString));
 
             // Add services to the container.
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            var key = Encoding.ASCII.GetBytes("MySecretString");
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+
+            });
+
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddTransient<IUserAccauntRepository, UserAccauntRepository>();

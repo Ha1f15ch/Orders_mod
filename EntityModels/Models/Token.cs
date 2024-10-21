@@ -16,6 +16,7 @@ namespace Models
         [Key]
         public Guid Guid { get; set; }
         public int UserId { get; set; }
+        public string TokenValue { get; set; }
         public DateTime DateCreate { get; set; } = DateTime.Now;
         public DateTime DateExpired {  get; set; } 
 
