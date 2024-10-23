@@ -12,6 +12,7 @@ namespace Repositories.InterfaceRepositories
         public Task<bool> CreateUserAccaunt(string user_name, string user_email, string user_password, string user_phoneNumber);
         public Task<bool> UpdateUserAccaunt(int user_id, string new_user_name, string new_user_email, string new_user_password, string new_user_phoneNumber);
         public Task<bool> DeleteUserAccaunt(int user_id);
+        public Task<bool> VerifyPassword(User userModel, string innerPassword);
         public Task<User?> GetUserAccauntByUserId(int user_id);
         public Task<User?> GetUserAccauntByUserName(string user_name);
         public Task<User?> GetUserAccauntByUserEmail(string user_email);

@@ -25,32 +25,75 @@ namespace Repositories.Repositories
             this.configuration = configuration;
         }
 
-        public Task<string> CreateJwtToken(int userId, TimeSpan expiry)
+        public async Task<string> GenerateJwtToken(int userId)
         {
-            var claims = new[]
+            try
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+                if (userId > 0)
+                {
+                    var claims = new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+                    var token = new JwtSecurityToken(
+                        issuer: configuration["Jwt:Issuer"],
+                        audience: configuration["Jwt:Audience"],
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(30),
+                        signingCredentials: creds);
+
+                    return new JwtSecurityTokenHandler().WriteToken(token);
+                }
+                else
+                {
+                    Console.WriteLine($"Передано в userId - {userId}");
+                    throw new ArgumentException($"Для генерации JwtToken передано некорректное значение - userId = {userId}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при выполнении метода - GenerateJwtToken. \n {ex.Message}");
+                return String.Empty;
+            }
         }
 
-        public Task<TokensDto> GenerateTokens(string userId)
+        public async Task<string> GenerateRefreshToken(int userId)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                if(userId > 0)
+                {
+                    var refreshToken = Guid.NewGuid().ToString();
 
-        public Task SaveToken(int userId, string refreshToken)
-        {
-            throw new NotImplementedException();
-        }
+                    var newTokenModel = new Token
+                    {
+                        UserId = userId,
+                        TokenValue = refreshToken,
+                        DateCreate = DateTime.Now,
+                        DateExpired = DateTime.Now.AddDays(1),
+                    };
 
-        public Task SetTokensInResponse(TokensDto tokens)
-        {
-            throw new NotImplementedException();
+                    await context.Tokens.AddAsync(newTokenModel);
+                    await context.SaveChangesAsync();
+
+                    return refreshToken;
+                }
+                else
+                {
+                    Console.WriteLine($"Передано в userId - {userId}");
+                    throw new ArgumentException($"Для генерации RefreshToken передано некорректное значение - userId = {userId}");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Ошибка при выполнении метода - GenerateRefreshToken. \n {ex.Message}");
+                return String.Empty;
+            }
         }
     }
 }

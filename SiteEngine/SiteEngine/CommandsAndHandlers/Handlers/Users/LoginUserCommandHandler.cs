@@ -18,7 +18,14 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.Users
         {
             try
             {
-                return await userRepository.
+                var user = await userRepository.GetUserAccauntByUserEmail(request.UserEmail);
+
+                if (user == null || !await userRepository.VerifyPassword(user, request.UserPassword))
+                {
+                    return false;
+                }
+
+                return true;
             }
             catch (Exception ex)
             {

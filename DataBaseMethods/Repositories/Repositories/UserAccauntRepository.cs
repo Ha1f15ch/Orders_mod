@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Repositories.InterfaceRepositories;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Repositories.Repositories
 {
@@ -37,7 +40,7 @@ namespace Repositories.Repositories
                 {
                     Name = user_name,
                     Email = user_email,
-                    Password = user_password,
+                    Password = await GenerateHashString(user_password),
                     PhoneNumber = user_phoneNumber
                 };
 
@@ -77,6 +80,11 @@ namespace Repositories.Repositories
                 Console.WriteLine($"Удалить запись user по значению 'user_id = {user_id}' не удалось. Аккаунт user не найден");
                 return false;
             }
+        }
+
+        public async Task<bool> VerifyPassword(User userModel, string innerPassword)
+        {
+            return await GenerateHashString(innerPassword) == userModel.Password;
         }
 
         public async Task<List<User>> GetAllUsers()
@@ -230,6 +238,19 @@ namespace Repositories.Repositories
                 Console.WriteLine($"Найти значение не удалось, передано некорректное значение id = {user_id}");
                 return false;
             }
+        }
+
+        private async Task<string> GenerateHashString(string password)
+        {
+            var hashMD5 = MD5.Create();
+
+            byte[] hash = hashMD5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            var builder = new StringBuilder(hash.Length * 2);
+            for (int i = 0; i < hash.Length; i++)
+            {
+                builder.Append(hash[i].ToString("X2"));
+            }
+            return builder.ToString();
         }
     }
 }

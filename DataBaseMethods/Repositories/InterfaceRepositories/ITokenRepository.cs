@@ -10,9 +10,7 @@ namespace Repositories.InterfaceRepositories
 {
     public interface ITokenRepository
     {
-        public Task<TokensDto> GenerateTokens(string userId);
-        public Task<string> CreateJwtToken(int userId, TimeSpan expiry);
-        public Task SetTokensInResponse(TokensDto tokens);
-        public Task SaveToken(int userId, string refreshToken);
+        public Task<string> GenerateRefreshToken(int userId);
+        public Task<string> GenerateJwtToken(int userId);
     }
 }

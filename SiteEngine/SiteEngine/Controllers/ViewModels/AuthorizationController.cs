@@ -62,7 +62,25 @@ namespace SiteEngine.Controllers.ViewModels
         [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserLoginModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
+            var command = new LoginUserCommand
+            {
+                UserEmail = model.UserEmail,
+                UserPassword = model.UserPassword
+            };
+
+            var result = await mediator.Send(command);
+
+            if(!result)
+            {
+                return Unauthorized();
+            }
+
+            return RedirectToAction("MainPage", "Main");
         }
     }
 }

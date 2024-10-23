@@ -46,8 +46,10 @@ namespace SiteEngine
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = "Issuer",
+                    ValidAudience = "Audience"
                 };
 
             });
