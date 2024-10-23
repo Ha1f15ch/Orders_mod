@@ -21,7 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogServices", "LoggingServi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbEngine", "DbEngine", "{03041050-FBAC-406C-874C-E6E0F701B56B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseContext", "DbEngine\DatabaseContext\DatabaseContext.csproj", "{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseContext", "DbEngine\DatabaseContext\DatabaseContext.csproj", "{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DtoModels", "DtoModels", "{5E8569C5-A984-41DD-BF38-2B7E175780C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtoModelsProj", "DtoModels\DtoModelsProj\DtoModelsProj.csproj", "{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{76E61F80-7798-46D8-8799-338FF9D3F146} = {C605E556-1B70-4455-92D2-8171A12FF2B4}
 		{CE018DF7-D5D7-478B-AE1A-E0FCE42ED4D7} = {76EFF45B-F0DC-47A7-ABC8-D5CAEF4C17B4}
 		{39A1DD5C-A80E-42C4-9C3C-6EF83D9CDCD5} = {03041050-FBAC-406C-874C-E6E0F701B56B}
+		{5D93091C-EAD1-4B89-AE43-14B0CFB18DCD} = {5E8569C5-A984-41DD-BF38-2B7E175780C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {967BD522-542E-4714-A826-94E95E4B5537}

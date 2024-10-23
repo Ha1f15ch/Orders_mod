@@ -41,8 +41,8 @@ namespace SiteEngine.Controllers.ViewModels
 
                 if (resultCommand)
                 {
-                    SetTokensInResponse();
-                    return RedirectToAction("MainPage", "Main");
+                    
+                    return RedirectToAction("login", "Main");
                 }
                 else
                 {

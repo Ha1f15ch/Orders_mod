@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DbEngine\DatabaseContext\DatabaseContext.csproj" />
+    <ProjectReference Include="..\..\DtoModels\DtoModelsProj\DtoModelsProj.csproj" />
     <ProjectReference Include="..\..\EntityModels\Models\Models.csproj" />
   </ItemGroup>
 
