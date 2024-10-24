@@ -25,7 +25,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.Users
                 {
                     var user = await userRepository.GetUserAccauntByUserName(request.UserName);
 
-                    await userRoleRepository.CreateUserRoleByIdVoid(user.Id, 1);
+                    await userRoleRepository.SetDefaultUserRole(user.Id);
 
                     return true;
                 }
@@ -37,7 +37,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.Users
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка в обработчике коменд Mediatr при обработке запроса регистрации, {ex.Message}");
+                Console.WriteLine($"Ошибка в обработчике комaнд Mediatr при обработке запроса регистрации, {ex.Message}");
                 return false;
             }
         }

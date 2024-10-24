@@ -4,7 +4,7 @@ using SiteEngine.CommandsAndHandlers.Commands.Users;
 
 namespace SiteEngine.CommandsAndHandlers.Handlers.Users
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, bool>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResult>
     {
         private readonly IUserAccauntRepository userRepository;
 
@@ -14,7 +14,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.Users
             this.userRepository = userRepository;
         }
 
-        public async Task<bool> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<LoginUserResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -22,15 +22,27 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.Users
 
                 if (user == null || !await userRepository.VerifyPassword(user, request.UserPassword))
                 {
-                    return false;
+                    return new LoginUserResult
+                    {
+                        IsSuccess = false,
+                        ErrorMessage = "Верификация не выполнена"
+                    };
                 }
 
-                return true;
+                return new LoginUserResult
+                {
+                    IsSuccess = true,
+                    UserId = user.Id,
+                };
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Ошибка в обработчике коменд Mediatr при обработке запроса входа в систему, {ex.Message}");
-                return false;
+                return new LoginUserResult
+                {
+                    IsSuccess = false,
+                    ErrorMessage = ex.Message
+                };
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SiteEngine.CommandsAndHandlers.Commands.Tokens;
 using SiteEngine.CommandsAndHandlers.Commands.Users;
 using SiteEngine.Interfaces;
 using SiteEngine.Interfaces.AuthMethodsControllers;
@@ -42,7 +43,7 @@ namespace SiteEngine.Controllers.ViewModels
                 if (resultCommand)
                 {
                     
-                    return RedirectToAction("login", "Main");
+                    return RedirectToAction("login", "Authorization");
                 }
                 else
                 {
@@ -75,11 +76,33 @@ namespace SiteEngine.Controllers.ViewModels
 
             var result = await mediator.Send(command);
 
-            if(!result)
+            if(!result.IsSuccess)
             {
-                return Unauthorized();
+                return Unauthorized(result.ErrorMessage);
             }
 
+            var commandForToken = new GenerateTokensQuery
+            {
+                UserId = result.UserId
+            };
+
+            var resultForToken = await mediator.Send(commandForToken);
+
+            Response.Cookies.Append("access_token", resultForToken.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+            });
+
+            return RedirectToAction("MainPage", "Main");
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            Response.Cookies.Delete("access_token");
             return RedirectToAction("MainPage", "Main");
         }
     }

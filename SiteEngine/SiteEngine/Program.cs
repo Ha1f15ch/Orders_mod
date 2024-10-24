@@ -10,6 +10,7 @@ using System.Text;
 using ServiceStack;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SiteEngine.Middlewares;
 
 namespace SiteEngine
 {
@@ -57,6 +58,8 @@ namespace SiteEngine
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             builder.Services.AddTransient<IUserAccauntRepository, UserAccauntRepository>();
+            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddTransient<IUserRoleRepository, UserRoleRepository>();
 
             builder.Services.AddSwaggerGen(c =>
             {
@@ -74,6 +77,7 @@ namespace SiteEngine
                 app.UseHsts();
             }
 
+            app.UseMiddleware<JwtMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -92,7 +96,7 @@ namespace SiteEngine
                 c.RoutePrefix = string.Empty;
             });
 
-            app.Map("/main", async context => context.Response.Redirect("/views/main"));
+            app.Map("/", async context => context.Response.Redirect("/views/main"));
 
             app.MapRazorPages();
             app.MapControllers();

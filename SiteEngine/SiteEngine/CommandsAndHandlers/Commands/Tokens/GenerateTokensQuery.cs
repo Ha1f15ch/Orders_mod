@@ -6,10 +6,5 @@ namespace SiteEngine.CommandsAndHandlers.Commands.Tokens
     public class GenerateTokensQuery : IRequest<TokensDto>
     {
         public int UserId { get; set; }
-
-        public GenerateTokensQuery(int userId)
-        {
-            UserId = userId;
-        }
     }
 }

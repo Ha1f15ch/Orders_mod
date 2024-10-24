@@ -24,9 +24,23 @@ namespace Repositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Task CreateUserRoleByIdVoid(int userId, int roleId) //Для создания связи при регистрации, когда userId не известен сразу
+        public async Task SetDefaultUserRole(int userId, int roleId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var newUserRoleItem = new UserRole
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                };
+
+                await context.UserRoles.AddAsync(newUserRoleItem);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Возникла ошибка при привязке стандартной роли к пользователю. {ex.Message}");
+            }
         }
 
         public Task<bool> DeleteUserRoleById(int userId, int roleId)

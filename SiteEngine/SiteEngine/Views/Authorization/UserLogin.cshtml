@@ -1,0 +1,61 @@
+﻿@using SiteEngine.Models.UserAccount
+@model UserLoginModel
+
+@{
+    Layout = "~/Views/Shared/mainContent.cshtml";
+}
+
+<div class="container">
+    <div class="row row-gap-3 align-items-center">
+        <div class="col-3">
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="row">
+                    <div class="justify-content-center d-flex">
+                        <h6>Форма для Авторизации</h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="justify-content-center d-flex">
+                        <form asp-action="login" asp-controller="Authorization" method="post">
+                            
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserEmail"
+                                               type="email"
+                                               class="form-control"
+                                               placeholder="Введите почтовый адрес" />
+                                        <label asp-for="UserEmail" class="form-label">Почта</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserEmail"></span>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col input-group">
+                                    <div class="form-floating">
+                                        <input asp-for="UserPassword"
+                                               type="password"
+                                               class="form-control"
+                                               placeholder="Введите Ваш пароль" />
+                                        <label asp-for="UserPassword" class="form-label">Пароль</label>
+                                    </div>
+                                    <span class="text-danger" asp-validation-for="UserPassword"></span>
+                                </div>
+                            </div>
+
+                            <div class="p-2 flex-fill d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Войти</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+        </div>
+    </div>
+</div>
