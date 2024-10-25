@@ -11,6 +11,9 @@ using ServiceStack;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SiteEngine.Middlewares;
+using SiteEngine.CommandsAndHandlers.Handlers.Tokens;
+using SiteEngine.CommandsAndHandlers.Commands.Tokens;
+using SiteEngine.CommandsAndHandlers.DtoModels;
 
 namespace SiteEngine
 {
@@ -66,7 +69,12 @@ namespace SiteEngine
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>());
+            builder.Services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<GenerateTokensCommandHandler>();
+            });
 
             var app = builder.Build();
 

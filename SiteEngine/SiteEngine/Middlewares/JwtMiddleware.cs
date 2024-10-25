@@ -20,7 +20,9 @@ namespace SiteEngine.Middlewares
         {
             var token = context.Request.Cookies["access_token"];
 
-            if(!context.Request.Path.StartsWithSegments("/views/main"))
+            if(!(context.Request.Path == "/views/main") &&
+                !context.Request.Path.StartsWithSegments("/css") &&
+                !context.Request.Path.StartsWithSegments("/js"))
             {
                 if (token == null)
                 {
@@ -35,6 +37,8 @@ namespace SiteEngine.Middlewares
                     context.Response.Redirect("views/main/account/login");
                     return;
                 }
+
+                Console.WriteLine($"Токен валиден, доступ разрешен. \n Token - {token} \n Path - {context.Request.Path}");
             }
 
             await next(context);

@@ -5,7 +5,7 @@ using SiteEngine.CommandsAndHandlers.DtoModels;
 
 namespace SiteEngine.CommandsAndHandlers.Handlers.Tokens
 {
-    public class GenerateTokensCommandHandler
+    public class GenerateTokensCommandHandler : IRequestHandler<GenerateTokensQuery, TokensDto>
     {
         private readonly IMediator mediator;
         private readonly ITokenRepository tokenRepository;

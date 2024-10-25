@@ -44,7 +44,7 @@ namespace Repositories.Repositories
                         issuer: configuration["Jwt:Issuer"],
                         audience: configuration["Jwt:Audience"],
                         claims: claims,
-                        expires: DateTime.Now.AddMinutes(30),
+                        expires: DateTime.UtcNow.AddMinutes(30),
                         signingCredentials: creds);
 
                     return new JwtSecurityTokenHandler().WriteToken(token);
@@ -74,8 +74,8 @@ namespace Repositories.Repositories
                     {
                         UserId = userId,
                         TokenValue = refreshToken,
-                        DateCreate = DateTime.Now,
-                        DateExpired = DateTime.Now.AddDays(1),
+                        DateCreate = DateTime.UtcNow,
+                        DateExpired = DateTime.UtcNow.AddDays(1),
                     };
 
                     await context.Tokens.AddAsync(newTokenModel);

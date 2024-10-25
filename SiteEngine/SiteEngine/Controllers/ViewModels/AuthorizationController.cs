@@ -43,7 +43,7 @@ namespace SiteEngine.Controllers.ViewModels
                 if (resultCommand)
                 {
                     
-                    return RedirectToAction("login", "Authorization");
+                    return RedirectToAction("UserLogin", "Authorization");
                 }
                 else
                 {
@@ -95,6 +95,8 @@ namespace SiteEngine.Controllers.ViewModels
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTimeOffset.UtcNow.AddMinutes(30)
             });
+
+            Console.WriteLine($"Добавлен токен доступа в cookie - {resultForToken.AccessToken}");
 
             return RedirectToAction("MainPage", "Main");
         }
