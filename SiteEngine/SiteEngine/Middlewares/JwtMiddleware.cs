@@ -21,6 +21,7 @@ namespace SiteEngine.Middlewares
             var token = context.Request.Cookies["access_token"];
 
             if(!(context.Request.Path == "/views/main") &&
+                !(context.Request.Path == "/swagger/") &&
                 !context.Request.Path.StartsWithSegments("/css") &&
                 !context.Request.Path.StartsWithSegments("/js"))
             {

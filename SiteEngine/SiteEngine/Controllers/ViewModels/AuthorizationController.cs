@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SiteEngine.CommandsAndHandlers.Commands.Tokens;
 using SiteEngine.CommandsAndHandlers.Commands.Users;
 using SiteEngine.Interfaces;
@@ -88,7 +89,53 @@ namespace SiteEngine.Controllers.ViewModels
 
             var resultForToken = await mediator.Send(commandForToken);
 
-            Response.Cookies.Append("access_token", resultForToken.AccessToken, new CookieOptions
+            if(resultForToken.RefreshToken.IsNullOrEmpty())
+            {
+                Console.WriteLine($"Токен refresh = {resultForToken.RefreshToken}, необходимо повторно авторизоваться");
+                return RedirectToAction("UserLogin", "Authorization");
+            }
+            else
+            {
+                Response.Cookies.Append("access_token", resultForToken.AccessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+                });
+
+                Console.WriteLine($"Добавлен токен доступа в cookie - {resultForToken.AccessToken}");
+
+                return RedirectToAction("MainPage", "Main");
+            }
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            Response.Cookies.Delete("access_token");
+            return RedirectToAction("MainPage", "Main");
+        }
+
+        [HttpPost("restoreAccessToken")]
+        public async Task<IActionResult> RestoreAccessToken()
+        {
+            var oldAccessToken = HttpContext.Request.Cookies["access_token"];
+
+            var commandForRestoreToken = new RestoreTokenCommand
+            {
+                AccessTokenForRestore = oldAccessToken
+            };
+
+            var resultRestoredAccessToken = await mediator.Send(commandForRestoreToken);
+
+            if(resultRestoredAccessToken.IsNullOrEmpty())
+            {
+                return RedirectToAction("UserLogin", "Authorization");
+            }
+
+            Response.Cookies.Delete("access_token");
+            Response.Cookies.Append("access_token", resultRestoredAccessToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -96,15 +143,6 @@ namespace SiteEngine.Controllers.ViewModels
                 Expires = DateTimeOffset.UtcNow.AddMinutes(30)
             });
 
-            Console.WriteLine($"Добавлен токен доступа в cookie - {resultForToken.AccessToken}");
-
-            return RedirectToAction("MainPage", "Main");
-        }
-
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            Response.Cookies.Delete("access_token");
             return RedirectToAction("MainPage", "Main");
         }
     }

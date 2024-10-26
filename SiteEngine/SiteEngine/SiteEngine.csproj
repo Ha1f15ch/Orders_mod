@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\API\" />
-    <Folder Include="Filters\" />
   </ItemGroup>
 
 </Project>

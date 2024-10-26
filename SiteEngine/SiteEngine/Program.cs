@@ -63,6 +63,7 @@ namespace SiteEngine
             builder.Services.AddTransient<IUserAccauntRepository, UserAccauntRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             builder.Services.AddTransient<IUserRoleRepository, UserRoleRepository>();
+            builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
             {
@@ -85,10 +86,14 @@ namespace SiteEngine
                 app.UseHsts();
             }
 
-            app.UseMiddleware<JwtMiddleware>();
+            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.Map("/", async context => context.Response.Redirect("/views/main"));
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -100,11 +105,9 @@ namespace SiteEngine
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1 documentation");
-                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation for View models routs");
+                c.RoutePrefix = "swagger";
             });
-
-            app.Map("/", async context => context.Response.Redirect("/views/main"));
 
             app.MapRazorPages();
             app.MapControllers();
