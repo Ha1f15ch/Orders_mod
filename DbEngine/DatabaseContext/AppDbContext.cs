@@ -29,12 +29,6 @@ namespace DatabaseContext
             optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
         }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=UsersOrders;Username=postgres;Password=Pass1!2@");
-            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
-        }*/
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EntityConfigurations.UserConfiguration());
