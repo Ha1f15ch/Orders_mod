@@ -110,7 +110,7 @@ namespace SiteEngine.Controllers.ViewModels
             }
         }
 
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
             Response.Cookies.Delete("access_token");

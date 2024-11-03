@@ -20,6 +20,8 @@
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input type="search" class="form-control form-control-dark" placeholder="Искать..." aria-label="Поиск">
                 </form>
+                @if(!User.Identity.IsAuthenticated)
+                {
                     <div class="text-end">
                         <div class="btn-group" role="group" aria-label="Группа кнопок с вложенным раскрывающимся списком">
                             <div class="btn-group" role="group">
@@ -27,12 +29,29 @@
                                     Аккаунт меню
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><button type="button" class="btn btn-outline-lightme-2dropdownitem" onclick="window.location = window.origin+'/login'">Войти</button></li>
-                                <li><button type="button" class="btn btnwarningdropdownitem" onclick="window.location = window.origin+'/registration'">Зарегистрироваться</button></li>
+                                    <li><button type="button" class="btn btn-outline-lightme-2dropdownitem" onclick="window.location = window.origin+'/account/login'">Войти</button></li>
+                                    <li><button type="button" class="btn btnwarningdropdownitem" onclick="window.location = window.origin+'/account/registration'">Зарегистрироваться</button></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                }
+                else
+                {
+                    <div class="text-end">
+                        <div class="btn-group" role="group" aria-label="Группа кнопок с вложенным раскрывающимся списком">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Мой профиль
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><button type="button" class="btn btn-outline-lightme-2dropdownitem" onclick="window.location = window.origin+'/views/main/account/login'">Моя анкета</button></li>
+                                    <li><button type="button" class="btn btnwarningdropdownitem" onclick="window.location = window.origin+'/views/main/account/logout'">Выйти</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </header>
