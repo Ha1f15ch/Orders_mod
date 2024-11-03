@@ -16,11 +16,20 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
             Console.WriteLine("UserProfileCommandHandler - создан");
         }
 
-        public async Task<bool> Handle(UserProfileCommand reques, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UserProfileCommand request, CancellationToken cancellationToken)
         {
             try
             {
+                var resultByCreateduserprofile = await userProfileRepository.CreateUserProfile(request.UserId, request.FirstName, request.MiddleName, request.LastName, request.Birthday);
 
+                if(resultByCreateduserprofile)
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exception("ОШибка при создании профиля пользователя");
+                }
             }
             catch (Exception ex)
             {

@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
+using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
 using SiteEngine.Middlewares;
 using SiteEngine.Models.UserProfiles;
 
@@ -19,18 +21,23 @@ namespace SiteEngine.Controllers.ViewModels
         [HttpGet("my-profile")]
         public async Task<IActionResult> UserProfileinfo()
         {
-            //если пользователь только что зарегистрировался - необходимо заполнить профиль - 1 редирект на страницу для создания/заполнения профиля
-            if()
+            var userCookie = new UserIdMetadataCommand()
             {
-                //если нет результата по userProfileModel - редлирект на создание
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
+
+            var resultUserCookie = await mediator.Send(userCookie);
+
+            if(resultUserCookie > 0)
+            {
+                var resultModel = await mediator.Send(resultUserCookie);
+
+                return View(resultModel);
             }
-            //Если у пользователя уже заполнен профиль ранее, то он его получает
-            //как понять что этот тот самый пользователь ? 
-            //После авторизации - нужно знать его user Id или, если авторизован userProfileId
-            //используя id через медиатр вытянуть данные
-            //Так как это уже заполненный профиль, имеет смысл не создавать отдельно окно с get update запросом 
-            //Возможно, имеет смысл передавать не userProfile из EFC, а UserProfileModel
-            return View();
+            else
+            {
+                return RedirectToAction("CreateUserProfile", "UserProfile");
+            }
         }
 
         [HttpGet("create-my-profile")]
@@ -43,7 +50,81 @@ namespace SiteEngine.Controllers.ViewModels
         [HttpPost("create-my-profile")]
         public async Task<IActionResult> CreateUserProfile(UserProfileModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var userCookie = new UserIdMetadataCommand()
+                {
+                    CookieString = HttpContext.Request.Cookies["access_token"]
+                };
 
+                var resultUserCookie = await mediator.Send(userCookie);
+
+                if (resultUserCookie > 0)
+                {
+                    var resultModel = await mediator.Send(resultUserCookie);
+
+                    var commandToCreateUserProfile = new UserProfileCommand
+                    {
+                        FirstName = model.FirstName,
+                        MiddleName = model.MiddleName,
+                        LastName = model.LastName,
+                        Birthday = model.Birthday,
+                        UserId = resultUserCookie
+                    };
+
+                    var resultCommandToCreateUserProfile = await mediator.Send(commandToCreateUserProfile);
+
+                    if(resultCommandToCreateUserProfile)
+                    {
+                        return RedirectToAction("UserProfileinfo", "UserProfile");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Ошибка при слздании профиля, попробуйте позднее.");
+                }
+            }
+
+            return View(model);
+
+        }
+
+        [ServiceFilter(typeof(AuthorizeAttributeFilter))]
+        [HttpGet("my-profile-update")]
+        public async Task<IActionResult> UserProfileUpdate()
+        {
+            var userCookie = new UserIdMetadataCommand()
+            {
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
+
+            var resultUserCookie = await mediator.Send(userCookie);
+
+            if (resultUserCookie > 0)
+            {
+                var resultModel = await mediator.Send(resultUserCookie) as UserProfileModel;
+
+                if(resultModel != null)
+                {
+                    var model = new UserProfileModel
+                    {
+                        FirstName = resultModel.FirstName,
+                        MiddleName = resultModel.MiddleName,
+                        LastName = resultModel.LastName,
+                        Birthday = resultModel.Birthday,
+                    };
+
+                    return View(model);
+                }
+                else
+                {
+                    return RedirectToAction("UserProfileinfo", "UserProfile");
+                }
+            }
+            else
+            {
+                return RedirectToAction("UserProfileinfo", "UserProfile");
+            }
         }
 
         [ServiceFilter(typeof(AuthorizeAttributeFilter))]
@@ -52,10 +133,33 @@ namespace SiteEngine.Controllers.ViewModels
         {
             if(ModelState.IsValid)
             {
+                var userCookie = new UserIdMetadataCommand()
+                {
+                    CookieString = HttpContext.Request.Cookies["access_token"]
+                };
 
+                var resultUserCookie = await mediator.Send(userCookie);
+
+                if (resultUserCookie > 0)
+                {
+                    var commandToUpdate = new UserProfileCommand
+                    {
+                        FirstName = model.FirstName,
+                        MiddleName = model.MiddleName,
+                        LastName = model.LastName,
+                        Birthday = model.Birthday,
+                        UserId = resultUserCookie
+                    };
+
+                    var resultCommandToUpdate = await mediator.Send(commandToUpdate);
+
+                    if(resultCommandToUpdate)
+                    {
+                        return RedirectToAction("UserProfileinfo", "UserProfile");
+                    }
+                }
             }
-
-            return RedirectToAction("UserProfileinfo", "UserProfile");
+            return View(model);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DatabaseContext;
 using Microsoft.IdentityModel.Tokens;
+using Repositories.InterfaceForServices;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.Services
 {
-    public class DecodeAndVerifieCookieService
+    public class DecodeAndVerifieCookieService : IDecodeAndVerifieCookieService
     {
         private readonly AppDbContext context;
 

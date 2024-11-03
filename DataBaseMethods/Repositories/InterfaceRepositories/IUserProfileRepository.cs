@@ -13,7 +13,7 @@ namespace Repositories.InterfaceRepositories
         public Task<UserProfile?> GetUserProfileByUserId(int userId);
         public Task<UserProfile?> GetUserProfileByUserProfileId(int userProfileId);
         public Task<List<UserProfile>> GetAllUserProfile();
-        public Task<bool> CreateUserProfile(string firstName, string middleName, string lastName, DateTime birthDay);
+        public Task<bool> CreateUserProfile(int userId, string firstName, string middleName, string lastName, DateTime birthDay);
         public Task<bool> UpdateUserProfileByUserProfileId(int userProfileId, string firstName, string middleName, string lastName, DateTime birthDay);
         public Task<bool> RemoveUserProfileByUserProfileId(int userProfileId);
     }

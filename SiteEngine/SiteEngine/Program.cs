@@ -14,6 +14,8 @@ using SiteEngine.Middlewares;
 using SiteEngine.CommandsAndHandlers.Handlers.Tokens;
 using SiteEngine.CommandsAndHandlers.Commands.Tokens;
 using SiteEngine.CommandsAndHandlers.DtoModels;
+using Repositories.InterfaceForServices;
+using Repositories.Services;
 
 namespace SiteEngine
 {
@@ -63,6 +65,8 @@ namespace SiteEngine
             builder.Services.AddTransient<IUserAccauntRepository, UserAccauntRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
             builder.Services.AddTransient<IUserRoleRepository, UserRoleRepository>();
+            builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            builder.Services.AddTransient<IDecodeAndVerifieCookieService, DecodeAndVerifieCookieService>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
