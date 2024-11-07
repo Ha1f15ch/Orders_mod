@@ -20,7 +20,7 @@ namespace Repositories.Repositories
             this.context = context;
         }
 
-        public async Task<bool> CreateUserProfile(string firstName, string middleName, string lastName, DateTime birthDay)
+        public async Task<bool> CreateUserProfile(int userId, string firstName, string middleName, string lastName, DateTime birthDay)
         {
             try
             {
@@ -30,16 +30,19 @@ namespace Repositories.Repositories
                 }
                 else
                 {
+                    DateTime utcBirthday = TimeZoneInfo.ConvertTimeToUtc(birthDay);
+
                     var newUserProfile = new UserProfile()
                     {
                         FirstName = firstName,
                         MiddleName = middleName,
                         LastName = lastName,
-                        Birthday = birthDay,
+                        Birthday = utcBirthday,
                         IsActived = true,
                         DateCreatedAt = DateTime.UtcNow,
                         DateUpdatedAt = DateTime.UtcNow,
                         DateDelete = null,
+                        UserId = userId,
                     };
 
                     context.UserProfiles.Add(newUserProfile);
@@ -147,10 +150,12 @@ namespace Repositories.Repositories
                     
                     if (oldUserProfile != null)
                     {
+                        DateTime utcBirthday = TimeZoneInfo.ConvertTimeToUtc(birthDay);
+
                         oldUserProfile.FirstName = firstName;
                         oldUserProfile.MiddleName = middleName;
                         oldUserProfile.LastName = lastName;
-                        oldUserProfile.Birthday = birthDay;
+                        oldUserProfile.Birthday = utcBirthday;
                         oldUserProfile.DateUpdatedAt= DateTime.UtcNow;
 
                         await context.SaveChangesAsync();

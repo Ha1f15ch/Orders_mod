@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using DtoModelsProj;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
 using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
@@ -30,20 +31,28 @@ namespace SiteEngine.Controllers.ViewModels
 
             if(resultUserCookie > 0)
             {
-                var resultModel = await mediator.Send(resultUserCookie);
+                var userProfileCommand = new GetUserProfileCommand
+                {
+                    UserId = resultUserCookie,
+                };
 
-                return View(resultModel);
+                var resultModel = await mediator.Send(userProfileCommand);
+
+                if(resultModel != null)
+                {
+                    return View(resultModel);
+                } 
             }
-            else
-            {
-                return RedirectToAction("CreateUserProfile", "UserProfile");
-            }
+
+            return RedirectToAction("CreateUserProfile");
         }
 
         [HttpGet("create-my-profile")]
         public async Task<IActionResult> CreateUserProfile()
         {
-            return View();
+            var model = new UserProfileModel();
+
+            return View(model);
         }
 
         [ServiceFilter(typeof(AuthorizeAttributeFilter))]
@@ -61,8 +70,6 @@ namespace SiteEngine.Controllers.ViewModels
 
                 if (resultUserCookie > 0)
                 {
-                    var resultModel = await mediator.Send(resultUserCookie);
-
                     var commandToCreateUserProfile = new UserProfileCommand
                     {
                         FirstName = model.FirstName,
@@ -102,16 +109,21 @@ namespace SiteEngine.Controllers.ViewModels
 
             if (resultUserCookie > 0)
             {
-                var resultModel = await mediator.Send(resultUserCookie) as UserProfileModel;
+                var commandForGetUserProfileModel = new GetUserProfileCommand
+                {
+                    UserId = resultUserCookie
+                };
+
+                var resultModel = await mediator.Send(commandForGetUserProfileModel);
 
                 if(resultModel != null)
                 {
                     var model = new UserProfileModel
                     {
-                        FirstName = resultModel.FirstName,
-                        MiddleName = resultModel.MiddleName,
-                        LastName = resultModel.LastName,
-                        Birthday = resultModel.Birthday,
+                        FirstName = resultModel.UserProfileFirstName,
+                        MiddleName = resultModel.UserProfileMiddleName,
+                        LastName = resultModel.UserProfileLastName,
+                        Birthday = resultModel.UserProfileBirthday,
                     };
 
                     return View(model);
@@ -128,7 +140,7 @@ namespace SiteEngine.Controllers.ViewModels
         }
 
         [ServiceFilter(typeof(AuthorizeAttributeFilter))]
-        [HttpPut("my-profile")]
+        [HttpPost("my-profile-update")]
         public async Task<IActionResult> UserProfileUpdate(UserProfileModel model)
         {
             if(ModelState.IsValid)
@@ -142,7 +154,7 @@ namespace SiteEngine.Controllers.ViewModels
 
                 if (resultUserCookie > 0)
                 {
-                    var commandToUpdate = new UserProfileCommand
+                    var commandToUpdate = new UserProfileUpdateCommand
                     {
                         FirstName = model.FirstName,
                         MiddleName = model.MiddleName,

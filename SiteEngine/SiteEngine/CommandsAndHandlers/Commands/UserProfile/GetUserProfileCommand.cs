@@ -4,7 +4,7 @@ using SiteEngine.Models.UserProfiles;
 
 namespace SiteEngine.CommandsAndHandlers.Commands.UserProfile
 {
-    public class GetUserProfileCommand : IRequest<UserProfileModel>
+    public class GetUserProfileCommand : IRequest<UserProfileModelDto>
     {
         public int UserId { get; set; }
     }

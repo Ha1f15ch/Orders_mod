@@ -6,7 +6,7 @@ using SiteEngine.Models.UserProfiles;
 
 namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
 {
-    public class GetUserProfileHandler : IRequestHandler<GetUserProfileCommand, UserProfileModel>
+    public class GetUserProfileHandler : IRequestHandler<GetUserProfileCommand, UserProfileModelDto>
     {
         private readonly IUserProfileRepository userProfileRepository;
 
@@ -16,7 +16,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
             Console.WriteLine("GetUserProfileHandler создан");
         }
 
-        public async Task<UserProfileModel> Handle(GetUserProfileCommand request, CancellationToken cancellationToken)
+        public async Task<UserProfileModelDto> Handle(GetUserProfileCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -29,12 +29,17 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
                 }
                 else
                 {
-                    var resultModel = new UserProfileModel()
+                    var resultModel = new UserProfileModelDto()
                     {
-                        FirstName = userProfileFromEF.FirstName,
-                        MiddleName = userProfileFromEF.MiddleName,
-                        LastName = userProfileFromEF.LastName,
-                        Birthday = userProfileFromEF.Birthday,
+                        UserProfileId = userProfileFromEF.Id,
+                        UserProfileFirstName = userProfileFromEF.FirstName,
+                        UserProfileMiddleName = userProfileFromEF.MiddleName,
+                        UserProfileLastName = userProfileFromEF.LastName,
+                        UserProfileBirthday = userProfileFromEF.Birthday,
+                        UserProfileAge = userProfileFromEF.Age,
+                        UserProfileIsActived = userProfileFromEF.IsActived,
+                        UserProfileDateCreatedAt = userProfileFromEF.DateCreatedAt,
+                        UserProfileDateUpdatedAt = userProfileFromEF.DateUpdatedAt,
                     };
 
                     return resultModel;
@@ -43,7 +48,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
             catch (Exception ex)
             {
                 Console.WriteLine($"Возникла ошиька при обработке команды для получения профиля пользователя - {ex.Message}");
-                return new UserProfileModel();
+                return null;
             }
         }
     }

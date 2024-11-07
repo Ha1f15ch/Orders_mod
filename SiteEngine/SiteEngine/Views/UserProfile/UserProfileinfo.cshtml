@@ -1,1 +1,91 @@
-﻿
+﻿@using DtoModelsProj
+@model UserProfileModelDto
+
+@{
+    Layout = "~/Views/Shared/mainContent.cshtml";
+}
+
+<div class="container">
+    <div class="row row-gap-3 align-items-center">
+        <div class="col-3">
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="row">
+                    <div class="justify-content-center d-flex">
+                        <h6>Информация о профиле пользователя.</h6>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="row">
+                        <strong>Идентификатор пользователя</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileId</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>ФИО пользователя</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileLastName @Model.UserProfileFirstName @Model.UserProfileMiddleName</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>Дата рождения</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileBirthday</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>Возраст</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileAge</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>Активен?</strong>
+                        <div class="col">
+                            @if (Model.UserProfileIsActived)
+                            {
+                                <h6>Да</h6>
+                            }
+                            else
+                            {
+                                <h6>Нет</h6>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>Дата создания профиля</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileDateCreatedAt</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <strong>Дата последнего изменения профиля</strong>
+                        <div class="col">
+                            <h6>@Model.UserProfileDateUpdatedAt</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="justify-content-center">
+                            <button type="button" class="btn btn-outline-warning" onclick="window.location = window.origin+'/views/main/my-profile-update'">Редактировать</button>
+                            //кнопка удалить/деактивировать
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+        </div>
+    </div>
+</div>

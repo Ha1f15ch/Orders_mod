@@ -4,7 +4,7 @@ using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
 
 namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
 {
-    public class UserProfileUpdateCommandHandler : IRequestHandler<UserProfileCommand, bool>
+    public class UserProfileUpdateCommandHandler : IRequestHandler<UserProfileUpdateCommand, bool>
     {
         private readonly IUserProfileRepository userProfileRepository;
 
@@ -13,7 +13,7 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.UserProfile
             this.userProfileRepository = userProfileRepository;
         }
 
-        public async Task<bool> Handle(UserProfileCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UserProfileUpdateCommand request, CancellationToken cancellationToken)
         {
             try
             {
