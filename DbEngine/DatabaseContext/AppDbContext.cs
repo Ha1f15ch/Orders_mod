@@ -9,12 +9,15 @@ namespace DatabaseContext
     {
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<UserProfile> UserProfiles { get; set; } = null!;
+        public DbSet<CustomerProfile> CustomerProfiles { get; set; } = null!;
+        public DbSet<EmployerProfile> EmployerProfiles { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<UserRole> UserRoles { get; set; } = null!;
         public DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
         public DbSet<OrderPriority> OrderPriorities { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
-        public DbSet<OrderScores> OrderScores { get; set; } = null!;
+        public DbSet<OrderScoresCustomer> OrderScoresCustomers { get; set; } = null!;
+        public DbSet<OrderScoresEmployer> OrderScoresEmployers { get; set; } = null!;
         public DbSet<AssignersRequests> AssignersRequests { get; set; } = null!;
         public DbSet<RequestsToCancellation> RequestsToCancellations { get; set; } = null!;
         public DbSet<Token> Tokens { get; set; } = null!;

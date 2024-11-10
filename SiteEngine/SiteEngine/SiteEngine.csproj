@@ -31,6 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="CommandsAndHandlers\Commands\EmployerProfile\" />
+    <Folder Include="CommandsAndHandlers\Handlers\EmployerProfile\" />
     <Folder Include="Controllers\API\" />
   </ItemGroup>
 

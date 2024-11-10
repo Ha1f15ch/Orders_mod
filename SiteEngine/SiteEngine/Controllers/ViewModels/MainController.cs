@@ -12,7 +12,5 @@ namespace SiteEngine.Controllers.ViewModels
         {
             return View();
         }
-
-
     }
 }

@@ -23,10 +23,11 @@ namespace Models
         public List<Order> OrdersCreated { get; set; } = new();
         public List<Order> OrdersAssigned { get; set; } = new();
         public UserProfile UserProfile { get; set; } = null!;
+        public EmployerProfile? EmployerProfile { get; set; }
+        public CustomerProfile? CustomerProfile { get; set; }
         public List<Role> Roles { get; set; } = new();
         public Token? Token { get; set; } = null!;
         public List<UserRole> UserRoles { get; set; } = new();
-        public List<OrderScores> OrderScores { get; set; } = new();
         public List<AssignersRequests> AssignersRequests { get; set; } = new();
         public List<RequestsToCancellation> RequestsToCancellationsInitiator { get; set; } = new();
         public List<RequestsToCancellation> RequestsToCancellationsConfirmer { get; set; } = new();

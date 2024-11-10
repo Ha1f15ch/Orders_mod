@@ -13,7 +13,7 @@ namespace Models
         public string TitleName { get; set; }
         public string Adress {  get; set; }
         public string Description { get; set; }
-        public int TimeForWork { get; set; }
+        public int DayToDelay { get; set; }
         public int UserIdCreated { get; set; }
         public int? UserIdAssigner {  get; set; }
         public string? OrderStatusId { get; set; }
@@ -26,7 +26,8 @@ namespace Models
         public User? UserAssigner { get; set; }
         public OrderPriority? OrderPriority { get; set; }
         public OrderStatus? OrderStatus { get; set; }
-        public List<OrderScores> OrderScores { get; set; } = new();
+        public List<OrderScoresEmployer> OrderScoresEmployers { get; set; } = new();
+        public List<OrderScoresCustomer> OrderScoresCustomers { get; set; } = new();
         public List<AssignersRequests> AssignersRequests { get; set; } = new();
         public List<RequestsToCancellation> RequestsToCancellations { get; set; } = new();
     }

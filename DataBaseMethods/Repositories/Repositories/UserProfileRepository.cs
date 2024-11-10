@@ -174,5 +174,29 @@ namespace Repositories.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> HasUserProfileByUserId(int userid)
+        {
+            try
+            {
+                var user = await context.Users.FindAsync(userid);
+
+                if (user != null)
+                {
+                    var userProfile = await context.UserProfiles.SingleOrDefaultAsync(p => p.UserId == userid);
+                    if (userProfile != null)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Возникла ошибка при поиске профиля пользователя - {ex.Message}");
+                return false;
+            }
+        }
     }
 }

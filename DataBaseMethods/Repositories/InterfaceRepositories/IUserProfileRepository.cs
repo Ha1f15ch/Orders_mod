@@ -16,5 +16,6 @@ namespace Repositories.InterfaceRepositories
         public Task<bool> CreateUserProfile(int userId, string firstName, string middleName, string lastName, DateTime birthDay);
         public Task<bool> UpdateUserProfileByUserProfileId(int userProfileId, string firstName, string middleName, string lastName, DateTime birthDay);
         public Task<bool> RemoveUserProfileByUserProfileId(int userProfileId);
+        public Task<bool> HasUserProfileByUserId(int userId);
     }
 }
