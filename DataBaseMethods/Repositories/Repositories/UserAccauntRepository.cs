@@ -87,6 +87,27 @@ namespace Repositories.Repositories
             return await GenerateHashString(innerPassword) == userModel.Password;
         }
 
+        public async Task<bool> ReturnHasUser(int userId)
+        {
+            try
+            {
+                if(userId > 0)
+                {
+                    var user = await context.Users.FindAsync(userId);
+
+                    if(user != null) return true;
+                }
+
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Возникла ошибка в определении, есть ли запись user или нет - {ex.Message}");
+                return false ;
+            }
+        }
+
         public async Task<List<User>> GetAllUsers()
         {
             return await context.Users.ToListAsync();

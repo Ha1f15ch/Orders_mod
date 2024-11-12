@@ -67,6 +67,7 @@ namespace SiteEngine
             builder.Services.AddTransient<IUserRoleRepository, UserRoleRepository>();
             builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             builder.Services.AddTransient<IDecodeAndVerifieCookieService, DecodeAndVerifieCookieService>();
+            builder.Services.AddTransient<ICommonProfileData, CommonProfileData>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
