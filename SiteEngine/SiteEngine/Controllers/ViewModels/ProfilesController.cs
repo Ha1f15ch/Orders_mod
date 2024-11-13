@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using SiteEngine.CommandsAndHandlers.Commands.CommonCommand;
 using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
 using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
 using SiteEngine.Models.CommonDataUserProfiles;
@@ -37,20 +39,30 @@ namespace SiteEngine.Controllers.ViewModels
 
                 if(await mediator.Send(commandForGetUserProfile))
                 {
-                    var model = new CommonDataUserProfiles
+                    var commandToFindAllUserProfiles = new GetUserProfilesByUserIdCommand
                     {
-
+                        UserId = getUserIdByCookieString
                     };
 
+                    // Проверяем по userid какие профиля есть у пользователя
+                    var findedUserProfiles = await mediator.Send(commandToFindAllUserProfiles);
+
+                    var model = new CommonDataUserProfiles
+                    {
+                        UserId = getUserIdByCookieString,
+                        UserProfile = findedUserProfiles["UserProfile"] as UserProfile,
+                        CustomerProfile = findedUserProfiles["CustomerProfile"] as CustomerProfile,
+                        EmployerProfile = findedUserProfiles["EmployerProfile"] as EmployerProfile
+                    };
+
+                    // Если нет профилей - выводим empty || Create new Profile - в новой экспортируемой модели
+                    // Если есть - отображаем данные о каждом профиле (*экран разделен на 2е половины, слева Customer, справа Employer)
+                    // Под каждым профилем отображать update btn, delete btn => при выборе, редирект на методы ниже (Update GET, Delete GET)
                     return View(model);
                 }
             }
 
             return RedirectToAction("CreateUserProfile", "UserProfile");
-            // Проверяем по userid какие профиля есть у пользователя
-            // Если нет профилей - выводим empty || Create new Profile - в новой экспортируемой модели 
-            // Если есть - отображаем данные о каждом профиле (*экран разделен на 2е половины, слева Customer, справа Employer)
-            // Под каждым профилем отображать update btn, delete btn => при выборе, редирект на методы ниже (Update GET, Delete GET)
         }
 
         [HttpGet("create-customer")]
