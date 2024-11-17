@@ -4,19 +4,14 @@ using Models;
 
 namespace DatabaseContext.EntityConfigurations
 {
-    public class OrderScoresConfiguration : IEntityTypeConfiguration<OrderScores>
+    public class OrderScoresEmployerConfiguration : IEntityTypeConfiguration<OrderScoresEmployer>
     {
-        public void Configure(EntityTypeBuilder<OrderScores> builder)
+        public void Configure(EntityTypeBuilder<OrderScoresEmployer> builder)
         {
-            builder.HasOne(os => os.User)
-                   .WithMany(u => u.OrderScores)
-                   .HasForeignKey(os => os.UserId)
+            builder.HasOne(os => os.EmployerProfile)
+                   .WithMany(ep => ep.OrderScoresEmployers)
+                   .HasForeignKey(os => os.EmployerProfileId)
                    .HasPrincipalKey(u => u.Id)
-                   .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(os => os.Order)
-                   .WithMany(o => o.OrderScores)
-                   .HasForeignKey(os => os.OrderId)
-                   .HasPrincipalKey(o => o.Id)
                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(y => y.DateCreated).HasConversion(

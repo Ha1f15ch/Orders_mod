@@ -41,7 +41,7 @@ namespace DatabaseContext
             modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderPriorityConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderStatusConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderConfiguration());
-            modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderScoresConfiguration());
+            modelBuilder.ApplyConfiguration(new EntityConfigurations.OrderScoresEmployerConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.AssignersRequestsConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.RequestsToCancellationConfiguration());
             modelBuilder.ApplyConfiguration(new EntityConfigurations.TokenConfiguration());

@@ -16,6 +16,11 @@ using SiteEngine.CommandsAndHandlers.Commands.Tokens;
 using SiteEngine.CommandsAndHandlers.DtoModels;
 using Repositories.InterfaceForServices;
 using Repositories.Services;
+using SiteEngine.CommandsAndHandlers.Handlers.CommonCommandHandlers;
+using SiteEngine.CommandsAndHandlers.Handlers.CustomerCommandsHandlers;
+using SiteEngine.CommandsAndHandlers.Handlers.EmployerCommandsHandlers;
+using SiteEngine.CommandsAndHandlers.Handlers.UserMetadata;
+using SiteEngine.CommandsAndHandlers.Handlers.UserProfile;
 
 namespace SiteEngine
 {
@@ -68,6 +73,8 @@ namespace SiteEngine
             builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             builder.Services.AddTransient<IDecodeAndVerifieCookieService, DecodeAndVerifieCookieService>();
             builder.Services.AddTransient<ICommonProfileData, CommonProfileData>();
+            builder.Services.AddTransient<ICustomerUserProfileRepository, CustomerUserProfileRepository>();
+            builder.Services.AddTransient<IEmployerUserProfileRepository, EmployerUserProfileRepository>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
@@ -80,6 +87,14 @@ namespace SiteEngine
                 cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<GenerateTokensCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<GetUserProfilesByUserIdCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<CreateCustomerUserProfileCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<CreateEmployerUserProfileCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UserIdMetadataCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<GetUserProfileHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<HasUserProfileCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UserProfileCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<UserProfileUpdateCommandHandler>();
             });
 
             var app = builder.Build();

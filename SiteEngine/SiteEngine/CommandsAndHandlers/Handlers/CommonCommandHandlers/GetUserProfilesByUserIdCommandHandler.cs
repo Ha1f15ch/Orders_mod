@@ -9,9 +9,10 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.CommonCommandHandlers
         private readonly ICommonProfileData commonProfileData;
         private readonly IUserAccauntRepository userAccauntRepository;
         
-        public GetUserProfilesByUserIdCommandHandler(ICommonProfileData commonProfileData)
+        public GetUserProfilesByUserIdCommandHandler(ICommonProfileData commonProfileData, IUserAccauntRepository userAccauntRepository)
         {
             this.commonProfileData = commonProfileData;
+            this.userAccauntRepository = userAccauntRepository;
             Console.WriteLine("GetUserProfilesByUserIdCommandHandler создан");
         }
 

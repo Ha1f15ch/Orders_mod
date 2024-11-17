@@ -6,5 +6,129 @@
 }
 
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                @if (Model.CustomerProfile == null)
+                {
+                    <h7>
+                        Профиль заказчика не создан
+                    </h7>
+                    <form method="post" asp-action="CreateCustomer" asp-controller="Profiles">
+                        <div class="hidden">
+                            <input class="form-control" type="number" name="userId" value=@Model.UserId />
+                        </div>
 
+                        <div class="p-2 flex-fill d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <h7>
+                        Профиль заказчика
+                    </h7>
+                    <div class="row">
+                        <div class="row">
+                            <strong>Имя</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.FirstName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Фамилия</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.LastName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Отчество</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.MiddleName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Возраст</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.Age</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Дата создания профиля пользователя</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.DateCreatedAt</h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                @if(Model.EmployerProfile == null)
+                {
+                    <h7>
+                        Профиль исполнителя не создан
+                    </h7>
+                    <form method="post" asp-action="CreateEmployer" asp-controller="Profiles">
+                        <div class="hidden">
+                            <input class="form-control" type="number" name="userId" value=@Model.UserId />
+                        </div>
+
+                        <div class="p-2 flex-fill d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Создать</button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <h7>
+                        Профиль исполнителя (возможно, в EmployerUserProfile реализовать свойства анкеты)
+                    </h7>
+                    <div class="row">
+                        <div class="row">
+                            <strong>Имя</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.FirstName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Фамилия</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.LastName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Отчество</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.MiddleName</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Возраст</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.Age</h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <strong>Дата создания профиля пользователя</strong>
+                            <div class="col">
+                                <h6>@Model.UserProfile?.DateCreatedAt</h6>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>

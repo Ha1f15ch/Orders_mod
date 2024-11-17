@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using SiteEngine.CommandsAndHandlers.Commands.CommonCommand;
+using SiteEngine.CommandsAndHandlers.Commands.CustomerCommands;
+using SiteEngine.CommandsAndHandlers.Commands.EmployerCommands;
 using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
 using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
 using SiteEngine.Models.CommonDataUserProfiles;
@@ -65,28 +67,59 @@ namespace SiteEngine.Controllers.ViewModels
             return RedirectToAction("CreateUserProfile", "UserProfile");
         }
 
-        [HttpGet("create-customer")]
-        public async Task<IActionResult> CreateCustomer()
-        {
-            // Предзаполнены должны быть пересекающиеся части между UserProfile и CustomerProfile
-        }
-
         [HttpPost("create-customer")]
-        public async Task<IActionResult> CreateCustomer()
+        public async Task<IActionResult> CreateCustomer(int userId)
         {
-            
-        }
+            // Через куки получаем userId
+            var getCookieString = new UserIdMetadataCommand()
+            {
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
 
-        [HttpGet("create-employer")]
-        public async Task<IActionResult> CreateEmployer()
-        {
-            // Предзаполнены должны быть пересекающиеся части между UserProfile и EmployerProfile
+            var getUserIdByCookieString = await mediator.Send(getCookieString);
+
+            if (getUserIdByCookieString > 0)
+            {
+                var commandForCreateCustomerUserProfile = new CreateCustomerUserProfileCommand
+                {
+                    Userid = getUserIdByCookieString
+                };
+
+                if(await mediator.Send(commandForCreateCustomerUserProfile))
+                {
+                    return RedirectToAction("ProfileCustomer", "CustomerUserProfile");
+                }
+            }
+
+            return RedirectToAction("Info", "Profiles");
         }
 
         [HttpPost("create-employer")]
-        public async Task<IActionResult> CreateEmployer()
+        public async Task<IActionResult> CreateEmployer(int userId)
         {
+            // Через куки получаем userId
+            var getCookieString = new UserIdMetadataCommand()
+            {
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
 
+            var getUserIdByCookieString = await mediator.Send(getCookieString);
+
+            if (getUserIdByCookieString > 0)
+            {
+                // формируем команду для отправки в обработчик
+                var commandForCreateEmployerUserProfile = new CreateEmployerUserProfileCommand
+                {
+                    UserId = getUserIdByCookieString
+                };
+
+                if(await mediator.Send(commandForCreateEmployerUserProfile))
+                {
+                    return RedirectToAction("ProfileEmployer", "EmployerUserProfile");
+                }
+            }
+
+            return RedirectToAction("Info", "Profiles");
         }
     }
 }
