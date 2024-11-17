@@ -5,14 +5,14 @@ namespace SiteEngine.Controllers.ViewModels
     [Route("views/employer-main/")]
     public class EmployerUserProfileController : BaseController
     {
-        [HttpGet("/")]
-        public IActionResult Index()
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        [HttpGet("/profile")]
-        public IActionResult ProfileEmployer()
+        [HttpGet("profile")]
+        public async Task<IActionResult> ProfileEmployer()
         {
             return View();
         }
