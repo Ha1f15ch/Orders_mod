@@ -64,6 +64,10 @@
                                 <h6>@Model.UserProfile?.DateCreatedAt</h6>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <button type="button" class="btn btn-outline-info" onclick="window.location = window.origin+'/views/customer-main/profile'">Открыть профиль - Заказчик</button>
+                        </div>
                     </div>
                 }
             </div>
@@ -125,6 +129,10 @@
                             <div class="col">
                                 <h6>@Model.UserProfile?.DateCreatedAt</h6>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <button type="button" class="btn btn-outline-info" onclick="window.location = window.origin+'/views/employer-main/profile'">Открыть профиль - Исполнитель</button>
                         </div>
                     </div>
                 }
