@@ -14,6 +14,7 @@ namespace Models
         public string Adress {  get; set; }
         public string Description { get; set; }
         public int DayToDelay { get; set; }
+        public string ContactInformation { get; set; }
         public int UserIdCreated { get; set; }
         public int? UserIdAssigner {  get; set; }
         public string? OrderStatusId { get; set; }
