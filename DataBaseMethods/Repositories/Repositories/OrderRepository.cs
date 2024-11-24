@@ -20,9 +20,58 @@ namespace Repositories.Repositories
             this.context = context;
         }
 
-        public Task<ReturnCreatedDtoOrderModel> CreateNewOrder(CreateOrderDto newOrderModel)
+        public async Task<ReturnCreatedDtoOrderModel> CreateNewOrder(CreateOrderDto newOrderModel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await context.Users.FindAsync(newOrderModel.Dto_UserIdCreated);
+
+                if(user != null && !string.IsNullOrEmpty(newOrderModel.Dto_TitleName) && !string.IsNullOrEmpty(newOrderModel.Dto_Adress) && (newOrderModel.Dto_DayToDelay > 0 && newOrderModel.Dto_UserIdCreated > 0) && !string.IsNullOrEmpty(newOrderModel.Dto_ContactInformation) && !string.IsNullOrEmpty(newOrderModel.Dto_OrderPriorityId))
+                {
+                    var order = new Order
+                    {
+                        TitleName = newOrderModel.Dto_TitleName,
+                        Adress = newOrderModel.Dto_Adress,
+                        Description = newOrderModel.Dto_Description,
+                        DayToDelay = newOrderModel.Dto_DayToDelay,
+                        ContactInformation = newOrderModel.Dto_ContactInformation,
+                        UserIdCreated = newOrderModel.Dto_UserIdCreated,
+                        UserIdAssigner = newOrderModel.Dto_UserIdAssigner,
+                        OrderStatusId = newOrderModel.Dto_OrderStatusId,
+                        OrderPriorityId = newOrderModel.Dto_OrderPriorityId,
+                        DateCreated = DateTime.UtcNow,
+                        DateUpdated = DateTime.UtcNow,
+                        DateDeleted = null,
+                    };
+
+                    await context.AddAsync(order);
+                    await context.SaveChangesAsync();
+
+                    var orderId = order.Id;
+
+                    return new ReturnCreatedDtoOrderModel
+                    {
+                        IsCreated = true,
+                        OrderId = orderId,
+                    };
+                }
+
+                Console.WriteLine($"Невозможно корректно создать запись - Order. Переданы некорректные данные: \nnewOrderModel.Dto_TitleName = {newOrderModel.Dto_TitleName}, \nnewOrderModel.Dto_Adress = {newOrderModel.Dto_Adress} \nnewOrderModel.Dto_DayToDelay = {newOrderModel.Dto_DayToDelay} \nnewOrderModel.Dto_UserIdCreated = {newOrderModel.Dto_UserIdCreated} \nnewOrderModel.Dto_ContactInformation = {newOrderModel.Dto_ContactInformation} \nnewOrderModel.Dto_OrderPriorityId = {newOrderModel.Dto_OrderPriorityId}");
+                return new ReturnCreatedDtoOrderModel()
+                {
+                    IsCreated = false,
+                    OrderId = 0
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Возникла ошибка при создании нового заказа - {ex.Message}");
+                return new ReturnCreatedDtoOrderModel()
+                {
+                    IsCreated = false,
+                    OrderId = 0
+                };
+            }
         }
 
         public async Task<List<Order>> GetAllOrders()

@@ -8,14 +8,14 @@ namespace DtoModelsProj
 {
     public class CreateOrderDto
     {
-        public string Dto_TitleName { get;}
-        public string Dto_Adress { get;}
-        public string Dto_Description { get;}
-        public int Dto_DayToDelay { get;}
-        public string Dto_ContactInformation { get;}
-        public int Dto_UserIdCreated { get;}
-        public int? Dto_UserIdAssigner = null;
-        public string? Dto_OrderStatusId = "N";
-        public string? Dto_OrderPriorityId { get;}
+        public string Dto_TitleName { get; set; }
+        public string Dto_Adress { get; set; }
+        public string Dto_Description { get; set; }
+        public int Dto_DayToDelay { get; set; }
+        public string Dto_ContactInformation { get; set; }
+        public int Dto_UserIdCreated { get; set; }
+        public int? Dto_UserIdAssigner { get; set; } = null;
+        public string? Dto_OrderStatusId { get; set; } = "N";
+        public string? Dto_OrderPriorityId { get; set; }
     }
 }

@@ -21,6 +21,7 @@ using SiteEngine.CommandsAndHandlers.Handlers.CustomerCommandsHandlers;
 using SiteEngine.CommandsAndHandlers.Handlers.EmployerCommandsHandlers;
 using SiteEngine.CommandsAndHandlers.Handlers.UserMetadata;
 using SiteEngine.CommandsAndHandlers.Handlers.UserProfile;
+using SiteEngine.CommandsAndHandlers.Handlers.OrderCommandHandlers;
 
 namespace SiteEngine
 {
@@ -75,6 +76,8 @@ namespace SiteEngine
             builder.Services.AddTransient<ICommonProfileData, CommonProfileData>();
             builder.Services.AddTransient<ICustomerUserProfileRepository, CustomerUserProfileRepository>();
             builder.Services.AddTransient<IEmployerUserProfileRepository, EmployerUserProfileRepository>();
+            builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+            builder.Services.AddTransient<IOrderPriorityRepository, OrderPriorityRepository>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
@@ -84,7 +87,14 @@ namespace SiteEngine
 
             builder.Services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
+
+                // Получаем все обработчики из текущей сборки
+                var assembly = Assembly.GetExecutingAssembly();
+
+                // Регистрируем все обработчики команд и запросов
+                cfg.RegisterServicesFromAssembly(assembly);
+
+                /*cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<GenerateTokensCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<GetUserProfilesByUserIdCommandHandler>();
@@ -95,6 +105,8 @@ namespace SiteEngine
                 cfg.RegisterServicesFromAssemblyContaining<HasUserProfileCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<UserProfileCommandHandler>();
                 cfg.RegisterServicesFromAssemblyContaining<UserProfileUpdateCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<CreateOrderAndReturnOrderIdCommandHandler>();
+                cfg.RegisterServicesFromAssemblyContaining<GetOrderPriorityCommandHandler>();*/
             });
 
             var app = builder.Build();
@@ -106,13 +118,9 @@ namespace SiteEngine
                 app.UseHsts();
             }
 
-            
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
-            app.Map("/", async context => context.Response.Redirect("/views/main"));
 
             app.UseAuthorization();
 

@@ -1,0 +1,109 @@
+﻿@using SiteEngine.Models.CustomerUserProfileModels
+@model CommonModelForCreateNewOrder
+
+@{
+    Layout = "~/Views/Shared/CustomerContentLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="justify-content-center">
+                <h6>Создание нового заказа.</h6>
+
+                <div class="row">
+                    <form method="post" asp-controller="CustomerUserProfile" asp-action="CreateNewOrder">
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <input asp-for="CreateNewOrderModel.TitleName"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Титульное название заказа" />
+                                    <label asp-for="CreateNewOrderModel.TitleName" class="form-label">Заголовок заказа</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.TitleName"></span>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <input asp-for="CreateNewOrderModel.Adress"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Адрес, по которому необходимо выполнить заказ" />
+                                    <label asp-for="CreateNewOrderModel.Adress" class="form-label">Адрес для заказа</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.Adress"></span>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <input asp-for="CreateNewOrderModel.Description"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Дополнительная информация о заказе" />
+                                    <label asp-for="CreateNewOrderModel.Description" class="form-label">Подробности</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.Description"></span>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <input asp-for="CreateNewOrderModel.DayToDelay"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Время на выполнение заказа" />
+                                    <label asp-for="CreateNewOrderModel.DayToDelay" class="form-label">Время для заказа</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.DayToDelay"></span>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <input asp-for="CreateNewOrderModel.ContactInformation"
+                                           type="text"
+                                           class="form-control"
+                                           placeholder="Контактная информация" />
+                                    <label asp-for="CreateNewOrderModel.ContactInformation" class="form-label">Контактные данные</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.ContactInformation"></span>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col input-group">
+                                <div class="form-floating">
+                                    <select class="form-select" asp-for="CreateNewOrderModel.OrderPriorityId" name="CreateNewOrderModel.OrderPriorityId" id="OrderPriorityId">
+                                        @foreach (var priority in Model.OrderPriorities)
+                                        {
+
+                                            <option value=@priority.OrderPriorityId>@priority.Description</option>
+                                        }
+                                    </select>
+                                    <label asp-for="CreateNewOrderModel.OrderPriorityId" class="form-label">Приоритет</label>
+                                </div>
+                                <span class="text-danger" asp-validation-for="CreateNewOrderModel.OrderPriorityId"></span>
+                            </div>
+                        </div>
+
+                        <div class="p-2 flex-fill d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Создать заказ</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

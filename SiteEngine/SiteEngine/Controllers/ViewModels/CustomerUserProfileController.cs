@@ -1,10 +1,15 @@
-﻿using MediatR;
+﻿using DtoModelsProj;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Models;
+using SiteEngine.CommandsAndHandlers.Commands.OrderCommands;
 using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
+using SiteEngine.Middlewares;
 using SiteEngine.Models.CustomerUserProfileModels;
 
 namespace SiteEngine.Controllers.ViewModels
 {
+    [ServiceFilter(typeof(AuthorizeAttributeFilter))]
     [Route("views/customer-main/")]
     public class CustomerUserProfileController : BaseController
     {
@@ -18,7 +23,7 @@ namespace SiteEngine.Controllers.ViewModels
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
-            return View();
+            return RedirectToAction("");// На Orders список моих заказов
         }
 
         [HttpGet("profile")]
@@ -27,16 +32,61 @@ namespace SiteEngine.Controllers.ViewModels
             return View();
         }
 
-        [HttpGet("new-order")]
-        public async Task<IActionResult> CreateNewOrder()
+        [HttpGet("orders")]
+        public async Task<IActionResult> AllMyOrders()
         {
             return View();
         }
 
-        [HttpPost("new-order")]
-        public async Task<IActionResult> CreateNewOrder(CreateNewOrderModel model)
+        [HttpGet("orders/:id")]
+        public async Task<IActionResult> OrderById(int id)
         {
-            if(ModelState.IsValid)
+            return View();
+        }
+
+        [HttpGet("new-order")]
+        public async Task<IActionResult> CreateNewOrder()
+        {
+            var getListOrderPriorityCommand = new GetOrderPriorityCommand();
+
+            var listOrderPriority = await mediator.Send(getListOrderPriorityCommand);
+
+            CommonModelForCreateNewOrder model = new CommonModelForCreateNewOrder
+            {
+                CreateNewOrderModel = new CreateNewOrderModel(),
+                OrderPriorities = listOrderPriority
+            };
+
+            return View(model);
+        }
+
+        private bool CustomValidate(CommonModelForCreateNewOrder model)
+        {
+            var listModelState = ModelState.ToList();
+            Dictionary<string?, object?> listCurrentKeys = new Dictionary<string, object>();
+            List<Object> validStates = new List<Object>();
+            foreach (var el_modelState in listModelState)
+            {
+                if (!el_modelState.Key.Contains("OrderPriorities"))
+                {
+                    listCurrentKeys.Add(el_modelState.Key, el_modelState.Value.ValidationState);
+                }
+            }
+
+            var values = listCurrentKeys.Values;
+
+            if (!values.Contains("Invalid"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        [HttpPost("new-order")]
+        public async Task<IActionResult> CreateNewOrder(CommonModelForCreateNewOrder model)
+        {
+            if (CustomValidate(model))
             {
                 var commandForGetCookieString = new UserIdMetadataCommand()
                 {
@@ -44,7 +94,39 @@ namespace SiteEngine.Controllers.ViewModels
                 };
 
                 var userIdByCookieString = await mediator.Send(commandForGetCookieString);
+
+                if(userIdByCookieString > 0)
+                {
+                    var newOrderDtoModel = new CreateOrderDto
+                    {
+                        Dto_TitleName = model.CreateNewOrderModel.TitleName,
+                        Dto_Adress = model.CreateNewOrderModel.Adress,
+                        Dto_Description = model.CreateNewOrderModel.Description,
+                        Dto_DayToDelay = model.CreateNewOrderModel.DayToDelay,
+                        Dto_ContactInformation = model.CreateNewOrderModel.ContactInformation,
+                        Dto_UserIdCreated = userIdByCookieString,
+                        Dto_OrderPriorityId = model.CreateNewOrderModel.OrderPriorityId,
+                    };
+
+                    var commandForCreateNewOrder = new CreateOrderAndReturnOrderIdCommand
+                    {
+                        OrderDto = newOrderDtoModel,
+                    };
+
+                    var resultCommand = await mediator.Send(commandForCreateNewOrder);
+
+                    if(resultCommand.IsCreated)
+                    {
+                        return RedirectToAction("", ""); //Редирект на orders/id
+                    }
+
+                    Console.WriteLine("Создать заказ с заданными параметрами не получлиось.");
+                }
             }
+
+            Console.WriteLine("Повторно отправляем данные в View");
+            var getListOrderPriorityCommand = new GetOrderPriorityCommand();
+            model.OrderPriorities = await mediator.Send(getListOrderPriorityCommand);
 
             return View(model);
         }

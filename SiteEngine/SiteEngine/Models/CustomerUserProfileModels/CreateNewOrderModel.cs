@@ -13,7 +13,6 @@ namespace SiteEngine.Models.CustomerUserProfileModels
         [Range(1, 14, ErrorMessage = "Время выполнения заказа не может быть меньше 1 и больше 14 !")]
         public int DayToDelay { get; set; }
         [Required(ErrorMessage = "Поле для ввода контактной информации обязательно для заполненеия !")]
-        [Phone, EmailAddress(ErrorMessage = "Некорректно введено значение для поля !")]
         public string ContactInformation { get; set; }
         [Required(ErrorMessage = "Поле для ввода приоритета заказа обязательно для заполненеия !")]
         public string OrderPriorityId { get; set; }

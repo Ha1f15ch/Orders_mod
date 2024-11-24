@@ -6,11 +6,13 @@ using SiteEngine.CommandsAndHandlers.Commands.CustomerCommands;
 using SiteEngine.CommandsAndHandlers.Commands.EmployerCommands;
 using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
 using SiteEngine.CommandsAndHandlers.Commands.UserProfile;
+using SiteEngine.Middlewares;
 using SiteEngine.Models.CommonDataUserProfiles;
 
 namespace SiteEngine.Controllers.ViewModels
 {
-    [Route("views/main/profiles")]
+    [ServiceFilter(typeof(AuthorizeAttributeFilter))]
+    [Route("views/main/profiles/")]
     public class ProfilesController : BaseController
     {
         private readonly IMediator mediator;
