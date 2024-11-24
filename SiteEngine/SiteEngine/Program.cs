@@ -78,6 +78,7 @@ namespace SiteEngine
             builder.Services.AddTransient<IEmployerUserProfileRepository, EmployerUserProfileRepository>();
             builder.Services.AddTransient<IOrderRepository, OrderRepository>();
             builder.Services.AddTransient<IOrderPriorityRepository, OrderPriorityRepository>();
+            builder.Services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
@@ -93,20 +94,6 @@ namespace SiteEngine
 
                 // Регистрируем все обработчики команд и запросов
                 cfg.RegisterServicesFromAssembly(assembly);
-
-                /*cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<GenerateTokensCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<GetUserProfilesByUserIdCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<CreateCustomerUserProfileCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<CreateEmployerUserProfileCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<UserIdMetadataCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<GetUserProfileHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<HasUserProfileCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<UserProfileCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<UserProfileUpdateCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<CreateOrderAndReturnOrderIdCommandHandler>();
-                cfg.RegisterServicesFromAssemblyContaining<GetOrderPriorityCommandHandler>();*/
             });
 
             var app = builder.Build();

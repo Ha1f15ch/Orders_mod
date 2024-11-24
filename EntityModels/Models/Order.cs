@@ -16,7 +16,7 @@ namespace Models
         public int DayToDelay { get; set; }
         public string ContactInformation { get; set; }
         public int UserIdCreated { get; set; }
-        public int? UserIdAssigner {  get; set; }
+        public int? UserIdAssigner { get; set; }
         public string? OrderStatusId { get; set; }
         public string? OrderPriorityId { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;

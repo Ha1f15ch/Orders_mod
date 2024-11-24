@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,6 @@ namespace Repositories.InterfaceRepositories
     public interface IEmployerUserProfileRepository
     {
         public Task<bool> CreateEmployerUserProfile(int userId);
+        public Task<EmployerProfile?> GetEmployerUserprofileByUserId(int? userId);
     }
 }

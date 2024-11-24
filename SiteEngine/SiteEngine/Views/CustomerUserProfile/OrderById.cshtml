@@ -1,0 +1,136 @@
+﻿@using SiteEngine.Models.OrderModels
+@model OrderModelForCustomer
+
+@{
+    Layout = "~/Views/Shared/CustomerContentLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="justify-content-start">
+                <div class="row">
+                    <div class="col">
+                        <strong>Id зкакза</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.Orderid</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Заголовок заказа</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderTitleName</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Адрес зкакза</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderAdress</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Описание зкакза</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderDescription</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Время для выполнения зкакза</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderDayToDelay</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Контактная информация</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderContactInformation</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Заказчик</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.CreatedUserProfile.LastName @Model.CreatedUserProfile.FirstName @Model.CreatedUserProfile.MiddleName</h7>
+                    </div>
+                </div>
+
+                @if(Model.UserAssignerUserProfile != null)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <strong>Исполнитель</strong>
+                        </div>
+                        <div class="col">
+                            <h7>@Model.UserAssignerUserProfile.LastName @Model.UserAssignerUserProfile.FirstName @Model.UserAssignerUserProfile.MiddleName</h7>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col">
+                            <strong>Исполнитель</strong>
+                        </div>
+                        <div class="col">
+                            <h7>Не утвержден</h7>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Статус заказа</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderStatus</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Приоритет заказа</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.OrderPriority</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Дата создания заказа</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.DateCreated</h7>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <strong>Дата последнего изменения заказа</strong>
+                    </div>
+                    <div class="col">
+                        <h7>@Model.DateUpdated</h7>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

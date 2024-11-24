@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Repositories.InterfaceRepositories
 {
-    public interface IOrderPriorityRepository
+    public interface IOrderStatusRepository
     {
-        public Task<List<OrderPriority>> GetAllPriority();
-        public Task<OrderPriority?> GetorderPriorityById(string orderPriorityId);
+        public Task<List<OrderStatus>> GetAllOrderStatuses();
+        public Task<OrderStatus?> GetOrderStatusById(string orderStatusId);
     }
 }

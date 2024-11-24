@@ -63,7 +63,7 @@ namespace Repositories.Repositories
             return await context.UserProfiles.ToListAsync();
         }
 
-        public async Task<UserProfile?> GetUserProfileByUserId(int userId)
+        public async Task<UserProfile?> GetUserProfileByUserId(int? userId)
         {
             try
             {

@@ -10,7 +10,7 @@ namespace Repositories.InterfaceRepositories
 {
     public interface IUserProfileRepository
     {
-        public Task<UserProfile?> GetUserProfileByUserId(int userId);
+        public Task<UserProfile?> GetUserProfileByUserId(int? userId);
         public Task<UserProfile?> GetUserProfileByUserProfileId(int userProfileId);
         public Task<List<UserProfile>> GetAllUserProfile();
         public Task<bool> CreateUserProfile(int userId, string firstName, string middleName, string lastName, DateTime birthDay);

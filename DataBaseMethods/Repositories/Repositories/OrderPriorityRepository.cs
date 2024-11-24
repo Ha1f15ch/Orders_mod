@@ -31,5 +31,24 @@ namespace Repositories.Repositories
                 return new List<OrderPriority>();
             }
         }
+
+        public async Task<OrderPriority?> GetorderPriorityById(string orderPriorityId)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(orderPriorityId))
+                {
+                    return await context.OrderPriorities.FindAsync(orderPriorityId);
+                }
+
+                Console.WriteLine($"Заданное значение для поиска - {orderPriorityId} - некорректно");
+                return null;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"При поиске приоритета для заказа по id = {orderPriorityId}, возникла ошибка - {ex.Message}");
+                return null;
+            }
+        }
     }
 }

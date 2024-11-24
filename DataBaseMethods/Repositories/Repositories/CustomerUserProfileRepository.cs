@@ -1,4 +1,5 @@
 ﻿using DatabaseContext;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Repositories.InterfaceRepositories;
 using System;
@@ -46,6 +47,24 @@ namespace Repositories.Repositories
             {
                 Console.WriteLine($"Ошибка при создании профиля пользователя - {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<CustomerProfile?> GetCustomerUserProfileByUserId(int userId)
+        {
+            try
+            {
+                if (userId > 0)
+                {
+                    return await context.CustomerProfiles.SingleOrDefaultAsync(p => p.UserId == userId);
+                }
+
+                throw new InvalidOperationException($"Передано некоррекное значение для поиска. userId = {userId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"При получении профиля заказчика по значению userId = {userId}, возникла ошибка - {ex.Message}");
+                return null;
             }
         }
     }
