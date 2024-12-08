@@ -112,5 +112,89 @@ namespace Repositories.Repositories
                 return null;
             }
         }
+
+        public async Task<List<Order?>> GetFilteredListOrders(DateOnly startCreatedDate, DateOnly endCreatedDate, DateOnly startDeletedDate, DateOnly endDeletedDate, string? listStatuses, string? listPriorities, bool isCustomer, int userId)
+        {
+            try
+            {
+                CustomerProfile? customer = null;
+                EmployerProfile? employer = null;
+                User? user = await context.Users.FindAsync(userId);
+
+                if(isCustomer)
+                {
+                    customer = await context.CustomerProfiles.SingleOrDefaultAsync(el => el.UserId == userId);
+                }
+
+                if(!isCustomer)
+                {
+                    employer = await context.EmployerProfiles.SingleOrDefaultAsync(el => el.UserId == userId);
+                }
+
+                IQueryable<Order> selectedOrders = (IQueryable<Order>)await context.Orders.ToListAsync();
+
+                if(isCustomer && customer != null && user != null)
+                {
+                    selectedOrders = selectedOrders.Where(order => order.UserIdCreated == user.Id);
+                }
+                else if (!isCustomer && employer != null && user !=null)
+                {//Исполнитель, имеет смысл добавить ограничение по статусам заказа
+                    selectedOrders = selectedOrders.Where(order => order.UserIdAssigner == user.Id && order.UserIdAssigner != order.UserIdCreated);
+                }
+
+                if (startCreatedDate > DateOnly.MinValue && endCreatedDate > DateOnly.MinValue && (startCreatedDate <= endCreatedDate))
+                {
+                    selectedOrders = selectedOrders.Where(order => DateOnly.FromDateTime(order.DateCreated) >= startCreatedDate &&
+                                                                   DateOnly.FromDateTime(order.DateCreated) <= endCreatedDate);
+                }
+                else if (startCreatedDate > DateOnly.MinValue)
+                {
+                    selectedOrders = selectedOrders.Where(order => DateOnly.FromDateTime(order.DateCreated) >= startCreatedDate);
+                }
+                else if (endCreatedDate > DateOnly.MinValue)
+                {
+                    selectedOrders = selectedOrders.Where(order => DateOnly.FromDateTime(order.DateCreated) <= endCreatedDate);
+                }
+
+                if (startDeletedDate > DateOnly.MinValue && endDeletedDate > DateOnly.MinValue && (startDeletedDate <= endDeletedDate))
+                {
+                    selectedOrders = selectedOrders.Where(order => order.DateDeleted.HasValue &&
+                                                                   DateOnly.FromDateTime(order.DateDeleted.Value) >= startDeletedDate &&
+                                                                   DateOnly.FromDateTime(order.DateDeleted.Value) <= endDeletedDate &&
+                                                                   (order.OrderStatusId.Contains("C") || order.OrderStatusId.Contains("X")));
+                }
+                else if (startDeletedDate > DateOnly.MinValue)
+                {
+                    selectedOrders = selectedOrders.Where(order => order.DateDeleted.HasValue &&
+                                                                   DateOnly.FromDateTime(order.DateDeleted.Value) >= startDeletedDate &&
+                                                                   (order.OrderStatusId.Contains("C") || order.OrderStatusId.Contains("X")));
+                }
+                else if (endDeletedDate > DateOnly.MinValue)
+                {
+                    selectedOrders = selectedOrders.Where(order => order.DateDeleted.HasValue &&
+                                                                   DateOnly.FromDateTime(order.DateDeleted.Value) <= endDeletedDate &&
+                                                                   (order.OrderStatusId.Contains("C") || order.OrderStatusId.Contains("X")));
+                }
+
+                if (!string.IsNullOrEmpty(listStatuses))
+                {
+                    var statusIds = listStatuses.Split(',').ToList();
+                    selectedOrders = selectedOrders.Where(order => statusIds.Any(id => order.OrderStatusId.Contains(id)));
+                }
+
+                if (!string.IsNullOrEmpty(listPriorities))
+                {
+                    var priorityIds = listPriorities.Split(',').ToList();
+                    selectedOrders = selectedOrders.Where(order => priorityIds.Any(id => order.OrderPriorityId.Equals(id)));
+                }
+
+                return await selectedOrders.ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Возникла ошибка при поиске заказов по фильтрам - {ex.Message}");
+                return await context.Orders?.ToListAsync();
+            }
+        }
     }
 }

@@ -14,5 +14,6 @@ namespace Repositories.InterfaceRepositories
         public Task<Order?> GetOrderById(int orderId);
         public Task<List<Order?>> GetListOrdersByTitleName(string partialTitleName);
         public Task<List<Order>> GetAllOrders();
+        public Task<List<Order?>> GetFilteredListOrders(DateOnly startCreatedDate, DateOnly endCreatedDate, DateOnly startDeletedDate, DateOnly endDeletedDate, string? listStatuses, string? listPriorities, bool isCustomer, int userId);
     }
 }

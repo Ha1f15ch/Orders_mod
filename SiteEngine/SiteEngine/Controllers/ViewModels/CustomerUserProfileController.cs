@@ -7,6 +7,7 @@ using SiteEngine.CommandsAndHandlers.Commands.UserMetadata;
 using SiteEngine.Middlewares;
 using SiteEngine.Models.CustomerUserProfileModels;
 using SiteEngine.Models.OrderModels;
+using SiteEngine.Models.UserProfiles;
 
 namespace SiteEngine.Controllers.ViewModels
 {
@@ -22,10 +23,7 @@ namespace SiteEngine.Controllers.ViewModels
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> Index()
-        {
-            return RedirectToAction("");// На Orders список моих заказов
-        }
+        public async Task<IActionResult> Index() => RedirectToAction("AllMyOrders");
 
         [HttpGet("profile")]
         public async Task<IActionResult> ProfileCustomer()
@@ -36,10 +34,112 @@ namespace SiteEngine.Controllers.ViewModels
         [HttpGet("orders")]
         public async Task<IActionResult> AllMyOrders()
         {
-            return View();
+            var commandForGetCookieString = new UserIdMetadataCommand()
+            {
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
+
+            var userIdByCookieString = await mediator.Send(commandForGetCookieString);
+
+            if(userIdByCookieString > 0)
+            {
+                var commandForGetAllOrdersForCustomer = new GetAllOrdersForCustomerCommand
+                {
+                    UserId = userIdByCookieString,
+                };
+
+                var resultCommand = await mediator.Send(commandForGetAllOrdersForCustomer);
+
+                if(!resultCommand.HasError)
+                {
+                    var model = new ListOrdersForCustomer
+                    {
+                        ListCustomerOrders = resultCommand.ListOrders,
+                        UserProfile = resultCommand.UserProfile,
+                        CustomerProfile = resultCommand.CustomerProfile,
+                        ListCustomerOrderPriorities = resultCommand.ListOrderPriorities,
+                        ListCustomerOrderStatuses = resultCommand.ListOrderStatuses,
+                        HasError = false,
+                        ErrorMessage = null
+                    };
+
+                    return View(model);
+                }
+
+                return View(new ListOrdersForCustomer
+                {
+                    ListCustomerOrders = resultCommand.ListOrders,
+                    UserProfile = resultCommand.UserProfile,
+                    CustomerProfile = resultCommand.CustomerProfile,
+                    ListCustomerOrderPriorities = resultCommand.ListOrderPriorities,
+                    ListCustomerOrderStatuses = resultCommand.ListOrderStatuses,
+                    HasError = true,
+                    ErrorMessage = (userIdByCookieString <= 0) ? "Указаны некорректные вводные данные - userId" : "Ошибка при получении данных о заказах"
+                });
+            }
+
+            return RedirectToAction("ProfileCustomer");
         }
 
-        [HttpGet("orders/:id")]
+        [HttpGet("orders/filtered")]
+        public async Task<IActionResult> AllMyOrders(
+                DateOnly dateCreateStart, 
+                DateOnly dateCreateEnd, 
+                DateOnly dateCanceledStart,
+                DateOnly dateCanceledEnd,
+                string? statusesId,
+                string? prioritiesId)
+        {
+            var commandForGetCookieString = new UserIdMetadataCommand()
+            {
+                CookieString = HttpContext.Request.Cookies["access_token"]
+            };
+
+            var userIdByCookieString = await mediator.Send(commandForGetCookieString);
+
+            var filterCommand = new FilteredOrderListCommand
+            {
+                UserId = userIdByCookieString,
+                startCreateD = dateCreateStart,
+                endCreateD = dateCreateEnd,
+                startDeleteD = dateCanceledStart,
+                endDeleteD = dateCanceledEnd,
+                listStatus = statusesId,
+                listPriority = prioritiesId,
+                isCustomer = true,
+            };
+
+            var resultFilteredCommand = await mediator.Send(filterCommand);
+
+            if(!resultFilteredCommand.HasError)
+            {
+                var model = new ListOrdersForCustomer
+                {
+                    ListCustomerOrders = resultFilteredCommand.ListOrders,
+                    UserProfile = resultFilteredCommand.UserProfile,
+                    CustomerProfile = resultFilteredCommand.CustomerProfile,
+                    ListCustomerOrderPriorities = resultFilteredCommand.ListOrderPriorities,
+                    ListCustomerOrderStatuses = resultFilteredCommand.ListOrderStatuses,
+                    HasError = resultFilteredCommand.HasError,
+                    ErrorMessage = resultFilteredCommand.ErrorMessage
+                };
+
+                return View(model);
+            }
+
+            return View(new ListOrdersForCustomer
+            {
+                ListCustomerOrders = resultFilteredCommand.ListOrders,
+                UserProfile = resultFilteredCommand.UserProfile,
+                CustomerProfile = resultFilteredCommand.CustomerProfile,
+                ListCustomerOrderPriorities = resultFilteredCommand.ListOrderPriorities,
+                ListCustomerOrderStatuses = resultFilteredCommand.ListOrderStatuses,
+                HasError = resultFilteredCommand.HasError,
+                ErrorMessage = resultFilteredCommand.ErrorMessage
+            });
+        }
+
+        [HttpGet("orders/id")]
         public async Task<IActionResult> OrderById(int id)
         {
             if(id > 0)
@@ -157,7 +257,7 @@ namespace SiteEngine.Controllers.ViewModels
 
                     if(resultCommand.IsCreated)
                     {
-                        return RedirectToAction("OrderById", "CustomerUserProfile", new {id = resultCommand.OrderId}); //Редирект на orders/id
+                        return RedirectToAction("OrderById", "CustomerUserProfile", new {id = resultCommand.OrderId});
                     }
 
                     Console.WriteLine("Создать заказ с заданными параметрами не получлиось.");

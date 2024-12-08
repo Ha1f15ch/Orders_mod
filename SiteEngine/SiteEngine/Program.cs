@@ -68,22 +68,23 @@ namespace SiteEngine
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-            builder.Services.AddTransient<IUserAccauntRepository, UserAccauntRepository>();
+            builder.Services.AddScoped<IUserAccauntRepository, UserAccauntRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
-            builder.Services.AddTransient<IUserRoleRepository, UserRoleRepository>();
-            builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
-            builder.Services.AddTransient<IDecodeAndVerifieCookieService, DecodeAndVerifieCookieService>();
-            builder.Services.AddTransient<ICommonProfileData, CommonProfileData>();
-            builder.Services.AddTransient<ICustomerUserProfileRepository, CustomerUserProfileRepository>();
-            builder.Services.AddTransient<IEmployerUserProfileRepository, EmployerUserProfileRepository>();
-            builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-            builder.Services.AddTransient<IOrderPriorityRepository, OrderPriorityRepository>();
-            builder.Services.AddTransient<IOrderStatusRepository, OrderStatusRepository>();
+            builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            builder.Services.AddScoped<IDecodeAndVerifieCookieService, DecodeAndVerifieCookieService>();
+            builder.Services.AddScoped<ICommonProfileData, CommonProfileData>();
+            builder.Services.AddScoped<ICustomerUserProfileRepository, CustomerUserProfileRepository>();
+            builder.Services.AddScoped<IEmployerUserProfileRepository, EmployerUserProfileRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderPriorityRepository, OrderPriorityRepository>();
+            builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
             builder.Services.AddScoped<AuthorizeAttributeFilter>();
 
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "My API without view", Version = "v2" });
             });
 
             builder.Services.AddMediatR(cfg =>
@@ -121,6 +122,9 @@ namespace SiteEngine
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API documentation for View models routs");
+                c.RoutePrefix = "swagger";
+
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "API documentation without View models routs");
                 c.RoutePrefix = "swagger";
             });
 

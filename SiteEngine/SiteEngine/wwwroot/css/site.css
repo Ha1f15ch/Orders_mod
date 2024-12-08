@@ -85,15 +85,15 @@ body {
     background-color: #CCFFCC; /* Öâåò äëÿ íîâîãî çàêàçà */
 }
 
-.status-in-progress {
+.status-started {
     background-color: #66CCFF; /* Öâåò äëÿ çàêàçà â ïðîöåññå */
 }
 
-.status-completed {
+.status-finaly {
     background-color: #32CD32; /* Öâåò äëÿ çàâåðøåííîãî çàêàçà */
 }
 
-.status-canceled {
+.status-cancel {
     background-color: #FFCC99; /* Öâåò äëÿ îòìåíåííîãî çàêàçà */
 }
 
@@ -123,19 +123,19 @@ body {
         color: gold;
     }
 
-.priority-major {
+.priority-height {
     width: 20px;
     height: 20px;
     background-color: #8B4513;
 }
 
-.priority-minimal {
+.priority-low {
     width: 20px;
     height: 20px;
     background-color: #20B2AA;
 }
 
-.priority-normal {
+.priority-middle {
     width: 20px;
     height: 20px;
     background-color: #7CFC00;

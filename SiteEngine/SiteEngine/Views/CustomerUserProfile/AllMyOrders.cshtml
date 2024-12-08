@@ -1,0 +1,200 @@
+﻿@using SiteEngine.Models.CustomerUserProfileModels
+@model ListOrdersForCustomer
+
+@{
+    Layout = "~/Views/Shared/CustomerContentLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col justify-content-start">
+            <form id="CustomFilterForm" method="get" asp-controller="CustomerUserProfile" asp-action="AllMyOrders">
+                <div class="row mb-3">
+                    <div class="col mb-3">
+                        <label class="form-label" for="dateCreateStart">Дата создания (с):</label>
+                        <input class="form-control" type="date" id="dateCreateStart" name="dateCreateStart" />
+                    </div>
+                    <div class="col mb-3">
+                        <label class="form-label" for="dateCreateEnd">Дата создания (по):</label>
+                        <input class="form-control" type="date" id="dateCreateEnd" name="dateCreateEnd" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col mb-3">
+                        <label class="form-label" for="dateCanceledStart">Дата отмены (с):</label>
+                        <input class="form-control" type="date" id="dateCanceledStart" name="dateCanceledStart" />
+                    </div>
+                    <div class="col mb-3">
+                        <label class="form-label" for="dateCanceledEnd">Дата отмены (по):</label>
+                        <input class="form-control" type="date" id="dateCanceledEnd" name="dateCanceledEnd" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <input type="hidden" name="statusesId" id="statusesId" value="" />
+                    <div class="dropdown d-grid gap-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCheckboxMenuButtonStatuses" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Статусы
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-checkboxes scroll-content" aria-labelledby="dropdownCheckboxMenuButtonStatuses">
+                            @foreach (var status in Model.ListCustomerOrderStatuses)
+                            {
+                                var statusColorCode = "";
+
+                                switch (status.OrderStatusId)
+                                {
+                                    case "C":
+                                        statusColorCode = "status-cancel";
+                                        break;
+                                    case "D":
+                                        statusColorCode = "status-discuss";
+                                        break;
+                                    case "F":
+                                        statusColorCode = "status-finaly";
+                                        break;
+                                    case "N":
+                                        statusColorCode = "status-new";
+                                        break;
+                                    case "S":
+                                        statusColorCode = "status-started";
+                                        break;
+                                    case "X":
+                                        statusColorCode = "status-deleted";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                <div class="form-check">
+                                    <span class="status-circle @statusColorCode"></span>
+                                    <input class="form-check-input" type="checkbox" name="statusId" id="@status.OrderStatusId" />
+                                    <label class="form-check-label" for="@status.OrderStatusId">@status.Description</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <input type="hidden" name="prioritiesId" id="prioritiesId" value="" />
+                    <div class="dropdown d-grid gap-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCheckboxMenuButtonPriorities" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Приоритеты
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-checkboxes scroll-content" aria-labelledby="dropdownCheckboxMenuButtonPriorities">
+                            @foreach (var priority in Model.ListCustomerOrderPriorities)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="priorityId" id="@priority.OrderPriorityId" />
+                                    <label class="form-check-label" for="@priority.OrderPriorityId">@priority.Description</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </form>
+        </div>
+
+        <div class="col-8">
+            <h7>Список заказов</h7>
+            @if(Model.HasError || Model.ListCustomerOrderPriorities.ToArray().Length == 0)
+            {
+                <div class="container">
+                    <div class="justify-content-center">
+                        @if(Model.ErrorMessage != null)
+                        {
+                            <h7>@Model.ErrorMessage</h7>
+                        }
+                        else
+                        {
+                            <h7>Возникла ошибка. Найти заказы не удалось</h7>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                var priorityClass = "";
+                var statusClass = "";
+                int rowValue = 1;
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Название заказа</th>
+                            <th scope="col">Исполнитель?</th>
+                            <th scope="col">Срок</th>
+                            <th scope="col">Приоритет</th>
+                            <th scope="col">Ссылка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListCustomerOrders)
+                        {
+                            switch (item?.OrderPriorityId)
+                            {
+                                case "H":
+                                    priorityClass = "priority-height";
+                                    break;
+                                case "M":
+                                    priorityClass = "priority-middle";
+                                    break;
+                                case "L":
+                                    priorityClass = "priority-low";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            switch (item?.OrderStatusId)
+                            {
+                                case "C":
+                                    statusClass = "status-cancel";
+                                    break;
+                                case "D":
+                                    statusClass = "status-discuss";
+                                    break;
+                                case "F":
+                                    statusClass = "status-finaly";
+                                    break;
+                                case "N":
+                                    statusClass = "status-new";
+                                    break;
+                                case "S":
+                                    statusClass = "status-started";
+                                    break;
+                                case "X":
+                                    statusClass = "status-deleted";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            <tr class="@statusClass">
+                                <th scope="row">@rowValue</th>
+                                <td>@item?.TitleName</td>
+                                <td>
+                                    @if (item?.UserIdAssigner > 0)
+                                    {
+                                        <p>Утвержден</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Не утвержден</p>
+                                    }
+                                </td>
+                                <td>@item?.DayToDelay</td>
+                                <td><div class="priority-square @priorityClass"></div></td>
+                                <td><button class="btn btn-outline-info" onclick="window.location = window.origin+'/views/customer-main/orders/id?id=@item?.Id'">Подробнее</button></td>
+                            </tr>
+                            {
+                                rowValue++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="/js/listOrders.js"></script>
