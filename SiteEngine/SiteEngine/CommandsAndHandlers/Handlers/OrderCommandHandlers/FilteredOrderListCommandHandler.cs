@@ -41,18 +41,23 @@ namespace SiteEngine.CommandsAndHandlers.Handlers.OrderCommandHandlers
             {
                 if(request.UserId > 0)
                 {
-                    var resultListOrders = await orderRepository.GetFilteredListOrders(request.startCreateD, request.endCreateD, request.startDeleteD, request.endDeleteD, request.listPriority, request.listStatus, request.isCustomer, request.UserId);
+                    var user = await userAccauntRepository.GetUserAccauntByUserId(request.UserId);
 
-                    return new ListOrdersForCustomerDto
+                    if(user != null)
                     {
-                        ListOrders = resultListOrders,
-                        UserProfile = await userProfileRepository.GetUserProfileByUserId(request.UserId),
-                        CustomerProfile = await customerUserProfileRepository.GetCustomerUserProfileByUserId(request.UserId),
-                        ListOrderPriorities = await orderPriorityRepository.GetAllPriority(),
-                        ListOrderStatuses = await orderStatusRepository.GetAllOrderStatuses(),
-                        HasError = false,
-                        ErrorMessage = string.Empty
-                    };
+                        var resultListOrders = await orderRepository.GetFilteredListOrders(request.startCreateD, request.endCreateD, request.startDeleteD, request.endDeleteD, request.listStatus, request.listPriority, request.isCustomer, user.Id);
+
+                        return new ListOrdersForCustomerDto
+                        {
+                            ListOrders = resultListOrders,
+                            UserProfile = await userProfileRepository.GetUserProfileByUserId(user.Id),
+                            CustomerProfile = await customerUserProfileRepository.GetCustomerUserProfileByUserId(user.Id),
+                            ListOrderPriorities = await orderPriorityRepository.GetAllPriority(),
+                            ListOrderStatuses = await orderStatusRepository.GetAllOrderStatuses(),
+                            HasError = false,
+                            ErrorMessage = string.Empty
+                        };
+                    }
                 }
                 throw new ArgumentException($"Передано некорректное значение userId = {request.UserId}");
             }

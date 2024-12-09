@@ -131,7 +131,7 @@ namespace Repositories.Repositories
                     employer = await context.EmployerProfiles.SingleOrDefaultAsync(el => el.UserId == userId);
                 }
 
-                IQueryable<Order> selectedOrders = (IQueryable<Order>)await context.Orders.ToListAsync();
+                IQueryable<Order> selectedOrders = context.Orders;
 
                 if(isCustomer && customer != null && user != null)
                 {
@@ -179,7 +179,7 @@ namespace Repositories.Repositories
                 if (!string.IsNullOrEmpty(listStatuses))
                 {
                     var statusIds = listStatuses.Split(',').ToList();
-                    selectedOrders = selectedOrders.Where(order => statusIds.Any(id => order.OrderStatusId.Contains(id)));
+                    selectedOrders = selectedOrders.Where(order => statusIds.Any(id => order.OrderStatusId.Equals(id)));
                 }
 
                 if (!string.IsNullOrEmpty(listPriorities))

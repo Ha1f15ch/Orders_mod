@@ -32,7 +32,7 @@ namespace SiteEngine.Controllers.ViewModels
         }
 
         [HttpGet("orders")]
-        public async Task<IActionResult> AllMyOrders()
+        public async Task<IActionResult> AllMyOrders(ListOrdersForCustomer data)
         {
             var commandForGetCookieString = new UserIdMetadataCommand()
             {
@@ -54,7 +54,7 @@ namespace SiteEngine.Controllers.ViewModels
                 {
                     var model = new ListOrdersForCustomer
                     {
-                        ListCustomerOrders = resultCommand.ListOrders,
+                        ListCustomerOrders = data.ListCustomerOrders.ToArray().Length > 0 ? data.ListCustomerOrders : resultCommand.ListOrders,
                         UserProfile = resultCommand.UserProfile,
                         CustomerProfile = resultCommand.CustomerProfile,
                         ListCustomerOrderPriorities = resultCommand.ListOrderPriorities,
@@ -90,6 +90,8 @@ namespace SiteEngine.Controllers.ViewModels
                 string? statusesId,
                 string? prioritiesId)
         {
+            Console.WriteLine($"данные из request: dateCreateStart = {dateCreateStart}, \ndateCreateEnd = {dateCreateEnd}, \ndateCanceledStart = {dateCanceledStart}, \ndateCanceledEnd = {dateCanceledEnd}, \nstatusesId = {statusesId}, \nprioritiesId = {prioritiesId}");
+
             var commandForGetCookieString = new UserIdMetadataCommand()
             {
                 CookieString = HttpContext.Request.Cookies["access_token"]
