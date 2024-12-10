@@ -29,7 +29,10 @@ namespace DatabaseContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
+            if(!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseLoggerFactory(SharedLoggerProvider);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
